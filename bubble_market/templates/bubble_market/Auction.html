@@ -1,0 +1,50 @@
+{% extends "otree/Page.html" %}
+{% load otree static %}
+
+{% block global_styles  %}
+<table id="history_bid" class="table">
+  <tr>
+    <th>Player</th>
+    <th>Bid</th>
+  </tr>
+</table>
+<input id="bid_box" type="number">
+<button type="button" id="bid_button">Send</button>
+
+<table id="history_ask" class="table">
+  <tr>
+    <th>Player</th>
+    <th>Bid</th>
+  </tr>
+</table>
+<input id="ask_box" type="number">
+<button type="button" id="ask_button">Send</button>
+{% endblock %}
+
+{% block global_scripts  %}
+
+
+<script>
+
+    let history_bid = document.getElementById('history_bid');
+    let bid_box = document.getElementById('bid_box');
+    let bid_button = document.getElementById('bid_button');
+    let history_ask = document.getElementById('history_ask');
+    let ask_box = document.getElementById('ask_box');
+    let ask_button = document.getElementById('ask_button');
+
+    function liveRecv(data) {
+        history_bid.innerHTML += '<tr><td>' + data.id_in_group + '</td><td>' + data.bid + '</td></tr>';
+        history_ask.innerHTML += '<tr><td>' + data.id_in_group + '</td><td>' + data.bid + '</td></tr>';
+    }
+
+    bid_button.onclick = function () {
+        liveSend(parseInt(bid_box.value));
+    };
+
+    ask_button.onclick = function () {
+        liveSend(parseInt(ask_box.value));
+    };
+
+</script>
+{% endblock %}
