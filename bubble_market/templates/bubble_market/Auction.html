@@ -1,7 +1,21 @@
 {% extends "otree/Page.html" %}
 {% load otree static %}
 
+{% block title %}
+    Period subsession.round_number
+{% endblock %}
+
 {% block global_styles  %}
+<div>
+    <table class = "table">
+        <tr>
+            <th>Average Dividend this period</th>
+            <th>Average Total Dividend</th>
+            <th>Periods remaining</th>
+        </tr>
+    </table>
+
+</div>
 <div class = "container-fluid">
   <div class = "row">
     <div class="col-lg-6">
@@ -14,7 +28,14 @@
 <input id="bid_box" type="number">
 <button type="button" id="bid_button">Send</button>
     </div>
+<div class="col-lg-6">
+<table id="history" class="table">
+  <tr>
+    <th>Recent Transactions</th>
+  </tr>
 
+</table>
+    </div>
     <div class="col-lg-6">
 <table id="history_ask" class="table">
   <tr>
@@ -43,10 +64,15 @@
 
     function liveRecv(data) {
         history_bid.innerHTML += '<tr><td>' + data.id_in_group + '</td><td>' + data.value + '</td></tr>';
+        history_ask.innerHTML += '<tr><td>' + data.id_in_group + '</td><td>' + data.value + '</td></tr>';
     }
 
     bid_button.onclick = function () {
         liveSend({'value': parseInt(bid_box.value), 'type': "bid"});
+    };
+
+    ask_button.onclick = function () {
+        liveSend({'value': parseInt(ask_box.value), 'type': "ask"});
     };
 
     ask_button.onclick = function () {

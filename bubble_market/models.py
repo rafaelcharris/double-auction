@@ -35,7 +35,7 @@ class Group(BaseGroup):
     highest_bidder = models.IntegerField()
     highest_bid = models.CurrencyField(initial=0)
     lowest_ask = models.CurrencyField(initial = 0)
-
+    lowest_asker = models.IntegerField()
 class Player(BasePlayer):
 
     assets = models.IntegerField()
@@ -59,3 +59,9 @@ class Player(BasePlayer):
                             "value":data["value"]}
                 return {0: response}
 
+#    def bids(self):
+#        return Bid.objects.filter(player=self)
+#
+#class Bid(ExtraModel):
+#    player = models.Link(Player)
+#    group = models.Link(Group)
