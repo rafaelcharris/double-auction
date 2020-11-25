@@ -2,6 +2,9 @@
 {% load otree static %}
 
 {% block global_styles  %}
+<div class = "container-fluid">
+  <div class = "row">
+    <div class="col-lg-6">
 <table id="history_bid" class="table">
   <tr>
     <th>Player</th>
@@ -10,40 +13,44 @@
 </table>
 <input id="bid_box" type="number">
 <button type="button" id="bid_button">Send</button>
+    </div>
 
+    <div class="col-lg-6">
 <table id="history_ask" class="table">
   <tr>
     <th>Player</th>
-    <th>Bid</th>
+    <th>Ask</th>
   </tr>
 </table>
 <input id="ask_box" type="number">
 <button type="button" id="ask_button">Send</button>
+    </div>
+  </div>
+</div>
+
 {% endblock %}
 
 {% block global_scripts  %}
-
-
 <script>
 
     let history_bid = document.getElementById('history_bid');
     let bid_box = document.getElementById('bid_box');
     let bid_button = document.getElementById('bid_button');
+
     let history_ask = document.getElementById('history_ask');
     let ask_box = document.getElementById('ask_box');
     let ask_button = document.getElementById('ask_button');
 
     function liveRecv(data) {
-        history_bid.innerHTML += '<tr><td>' + data.id_in_group + '</td><td>' + data.bid + '</td></tr>';
-        history_ask.innerHTML += '<tr><td>' + data.id_in_group + '</td><td>' + data.bid + '</td></tr>';
+        history_bid.innerHTML += '<tr><td>' + data.id_in_group + '</td><td>' + data.value + '</td></tr>';
     }
 
     bid_button.onclick = function () {
-        liveSend(parseInt(bid_box.value));
+        liveSend({'value': parseInt(bid_box.value), 'type': "bid"});
     };
 
     ask_button.onclick = function () {
-        liveSend(parseInt(ask_box.value));
+        liveSend({'value': parseInt(ask_box.value), 'type': "ask"});
     };
 
 </script>

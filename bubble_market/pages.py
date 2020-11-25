@@ -4,8 +4,7 @@ from .models import Constants
 
 
 class Auction(Page):
-    live_bid = 'live_bid'
-    live_ask = 'live_ask'
+    live_method = 'live_auction'
 
 class ResultsWaitPage(WaitPage):
     pass

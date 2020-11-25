@@ -5,7 +5,7 @@ SESSION_CONFIGS = [
         name='Market',
         display_name="Market",
         num_demo_participants=3,
-        app_sequence=['auction  ']
+        app_sequence=['bubble_market']
      ),
 ]
 
