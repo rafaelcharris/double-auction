@@ -65,3 +65,7 @@ class Player(BasePlayer):
 #class Bid(ExtraModel):
 #    player = models.Link(Player)
 #    group = models.Link(Group)
+
+#TODO: Hacer que se puedan comprar cosas
+#TODO: mostar info de las transacciones
+#TODO: Agregar límite de tiempo
