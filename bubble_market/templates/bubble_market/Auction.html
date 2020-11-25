@@ -1,11 +1,10 @@
 {% extends "otree/Page.html" %}
 {% load otree static %}
 
-{% block title %}
-    Period subsession.round_number
-{% endblock %}
 
 {% block global_styles  %}
+<h1>Period {{subsession.round_number}}</h1>
+<hr>
 <div>
     <table class = "table">
         <tr>
@@ -18,7 +17,7 @@
 </div>
 <div class = "container-fluid">
   <div class = "row">
-    <div class="col-lg-6">
+    <div class="col">
 <table id="history_bid" class="table">
   <tr>
     <th>Player</th>
@@ -26,9 +25,9 @@
   </tr>
 </table>
 <input id="bid_box" type="number">
-<button type="button" id="bid_button">Send</button>
+Price: <button type="button" id="bid_button">Send</button>
     </div>
-<div class="col-lg-6">
+<div class="col-lg">
 <table id="history" class="table">
   <tr>
     <th>Recent Transactions</th>
@@ -36,7 +35,7 @@
 
 </table>
     </div>
-    <div class="col-lg-6">
+    <div class="col-lg">
 <table id="history_ask" class="table">
   <tr>
     <th>Player</th>
@@ -44,7 +43,7 @@
   </tr>
 </table>
 <input id="ask_box" type="number">
-<button type="button" id="ask_button">Send</button>
+Price: <button type="button" id="ask_button">Send</button>
     </div>
   </div>
 </div>
