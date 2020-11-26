@@ -18,22 +18,21 @@
 <div class = "container-fluid">
   <div class = "row">
     <div class="col">
-<table id="history_bid" class="table">
-    <thead>
+<table class = "table">
+       <thead>
     <tr>
-        <td colspan = "2"><h5>Recent Bids</h5></td>
+        <td colspan = "2"><h5>Best Market Bid</h5></td>
     </tr>
     </thead>
-  <tr>
-    <th>Player</th>
-    <th>Bid</th>
-  </tr>
+</table>
+<table id="history_bid" class="table">
+
 </table>
 Price: <input id="bid_box" type="number">
 <button type="button" id="bid_button" class="btn btn-primary">Submit Buy Price</button>
 <input id="buy_bid" type="hidden" type = "number">
-<button type="button" id="buy_bid_button" class="btn btn-success btn-block">Buy Asset at </button>
-    </div>
+<button type="button" id="buy_bid_button" class="btn btn-success btn-block p-1">Buy Asset at </button>
+</div>
 
 <div class="col-lg">
 <table id="history" class="table">
@@ -46,22 +45,26 @@ Price: <input id="bid_box" type="number">
 </div>
 
 <div class="col-lg">
-<table id="history_ask" class="table">
+<table class = "table">
     <thead>
     <tr>
-        <td colspan = "2"><h5>Recent Asks</h5></td>
+        <td colspan = "2"><h5>Best Market Ask</h5></td>
     </tr>
-    </thead>
+   </thead>
   <tr>
     <th>Player</th>
     <th>Ask</th>
   </tr>
 </table>
+
+<table id="history_ask" class="table">
+
+</table>
 Price: <input id="ask_box" type="number">
 <button type="button" id="ask_button" class="btn btn-primary">Submit Ask price</button>
 
     <input id="sell_asset" type="hidden" type = "number">
-<button type="button" id="sell_ask_button" class="btn btn-success btn-block">Sell Asset at </button>
+<button type="button" id="sell_ask_button" class="btn btn-success btn-block mr-1">Sell Asset at </button>
     </div>
   </div>
 <div class = "row">
@@ -116,13 +119,13 @@ Price: <input id="ask_box" type="number">
     function liveRecv(data) {
         if (data.type == "bid"){
             //if (data.id_in_group == }) // este if debería ser algo así como if el id es distinto del del man, entonces no
-            history_bid.innerHTML += '<tr><td>' + data.id_in_group + '</td><td>' + data.value + '</td></tr>';
-            //history_bid.innerHTML += '<tr><td>' + data.id_in_group + '</td><td>' + data.value + '</td></tr>';
+            history_bid.innerHTML = '<tr><td>' + data.id_in_group + '</td><td>' + data.value + '</td></tr>';
+
             document.getElementById("sell_ask_button").innerHTML = 'Sell Asset at: ' + data.value;
             document.getElementById("sell_asset") = data.value;
 
         } else if (data.type == "ask"){
-            history_ask.innerHTML += '<tr><td>' + data.id_in_group + '</td><td>' + data.value + '</td></tr>';
+            history_ask.innerHTML = '<tr><td>' + data.id_in_group + '</td><td>' + data.value + '</td></tr>';
             document.getElementById("buy_bid_button").innerHTML = 'Buy Asset at: ' + data.value;
         } else if (data.type == "contract"){
             history.innerHTML += '<tr><td>' + data.value + '</td></tr>';
