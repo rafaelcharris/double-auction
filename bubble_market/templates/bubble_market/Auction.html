@@ -38,7 +38,7 @@ Price: <input id="bid_box" type="number">
 <div class="col-lg">
 <table id="history" class="table">
   <tr>
-    <th><h5>Recent Transactions</h5></th>
+    <th><h5>Recent Transactions Prices</h5></th>
   </tr>
 </table>
 </div>
@@ -58,10 +58,31 @@ Price: <input id="bid_box" type="number">
 Price: <input id="ask_box" type="number">
 <button type="button" id="ask_button" class="btn btn-primary">Submit Ask price</button>
 
-    <input id="sell_ask" type="hidden" type = "number">
+    <input id="sell_asset" type="hidden" type = "number">
 <button type="button" id="sell_ask_button" class="btn btn-success btn-block">Sell Asset at </button>
     </div>
   </div>
+<div class = "row">
+    <div class = "col">
+
+    </div>
+    <div class = "col">
+    <table id = "information" class = "table">
+        <tr>
+            <th><h5>Your Cash:</h5></th>
+            <th>{{ self.money }}</th>
+        </tr>
+
+        <tr>
+            <th><h5>Number of Assets:</h5></th>
+            <th>{{ self.assets }}</th>
+        </tr>
+    </table>
+    </div>
+    <div class = "col">
+
+    </div>
+</div>
 </div>
 
 {% endblock %}
@@ -78,7 +99,7 @@ Price: <input id="ask_box" type="number">
     let ask_button = document.getElementById('ask_button');
 
     let history = document.getElementById('history');
-    //let ask_box = document.getElementById('ask_box');
+    let sell_asset = document.getElementById('bid_box');
     //let ask_button = document.getElementById('ask_button');
 
     function liveRecv(data) {
@@ -88,8 +109,10 @@ Price: <input id="ask_box" type="number">
         } else if (data.type == "ask"){
             history_ask.innerHTML += '<tr><td>' + data.id_in_group + '</td><td>' + data.value + '</td></tr>';
             document.getElementById("buy_bid_button").innerHTML = 'Buy Asset at: ' + data.value;
-        } else{
-            history.innerHTML += '<tr><td>' + data.id_in_group + '</td><td>' + data.value + '</td></tr>';
+        } else {
+            history_bid.innterHTML += ""
+            history.innerHTML += data.value + '</td></tr>';
+            // document.getElementById('sell_ask').value = data.value;
         }
     }
 
@@ -102,7 +125,7 @@ Price: <input id="ask_box" type="number">
     };
 
     sell_ask_button.onclick = function () {
-        liveSend({'value': parseInt(history.value), 'type': "contract"});
+        liveSend({'value': parseInt(bid_box.value), 'type': "contract"});
     };
 
 </script>

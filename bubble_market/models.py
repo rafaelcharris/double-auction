@@ -38,9 +38,11 @@ class Group(BaseGroup):
     highest_bid = models.CurrencyField(initial=0)
     lowest_ask = models.CurrencyField(initial = 100)
     lowest_asker = models.IntegerField()
+
 class Player(BasePlayer):
 
     assets = models.IntegerField()
+    money = models.IntegerField(initial = Constants.endowment)
 
     def live_auction(self, data):
         if data["type"] == "bid":
@@ -63,11 +65,13 @@ class Player(BasePlayer):
         else:
             my_id = self.id_in_group
             self.assets += 1
+            self.money -= data["value"]
             if data["value"] <= Constants.endowment:
                 response = {"id_in_group": my_id,
                             "type": "contract",
                             "value": data["value"],
-                            "assets": self.assets}
+                            "assets": self.assets,
+                            "money": self.money}
                 return {0: response}
 
 #    def bids(self):
