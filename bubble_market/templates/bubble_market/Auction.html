@@ -30,7 +30,7 @@
 </table>
 Price: <input id="bid_box" type="number">
 <button type="button" id="bid_button" class="btn btn-primary">Submit Buy Price</button>
-<input id="buy_bid" type="hidden" type = "number">
+<input id="buy_asset" type="hidden" type = "number">
 <button type="button" id="buy_bid_button" class="btn btn-success btn-block p-1">Buy Asset at </button>
 </div>
 
@@ -114,22 +114,24 @@ Price: <input id="ask_box" type="number">
 
     let history = document.getElementById('history');
     let sell_asset = document.getElementById('bid_box');
-    //let ask_button = document.getElementById('ask_button');
+    let ask_button = document.getElementById('ask_box');
 
     function liveRecv(data) {
         if (data.type == "bid"){
             //if (data.id_in_group == }) // este if debería ser algo así como if el id es distinto del del man, entonces no
             history_bid.innerHTML = '<tr><td>' + data.id_in_group + '</td><td>' + data.value + '</td></tr>';
-
             document.getElementById("sell_ask_button").innerHTML = 'Sell Asset at: ' + data.value;
             document.getElementById("sell_asset") = data.value;
 
         } else if (data.type == "ask"){
             history_ask.innerHTML = '<tr><td>' + data.id_in_group + '</td><td>' + data.value + '</td></tr>';
             document.getElementById("buy_bid_button").innerHTML = 'Buy Asset at: ' + data.value;
+            document.getElementById("buy_asset") = data.value;
         } else if (data.type == "contract"){
             history.innerHTML += '<tr><td>' + data.value + '</td></tr>';
             document.getElementById('sell_asset').value = data.value;
+            document.getElementById('buy_asset').value = data.value;
+
         } else if (data.type == "error"){
             console.log("error")
         }
@@ -148,5 +150,8 @@ Price: <input id="ask_box" type="number">
         //document.getElementById("historty_bid").innerHTML -= '';
     };
 
+    buy_bid_button.onclick = function () {
+        liveSend({'value': parseInt(ask_button.value), 'type': "contract"});
+    };
 </script>
 {% endblock %}

@@ -51,6 +51,7 @@ class Player(BasePlayer):
 
             if data["value"] > group.highest_bid:
                 group.highest_bidder = my_id
+                group.highest_bid = data["value"]
                 response = {"id_in_group": my_id,
                             "type": "bid",
                             "value": data["value"]}
@@ -74,6 +75,7 @@ class Player(BasePlayer):
         elif data["type"] == "contract":
             my_id = self.id_in_group
             self.assets += 1
+            self.group.highest_bid = 0 #Restablecer el valor de la highest bid a lo más bajo cuando se venda el paquete
             if data["value"] <= self.money:
                 self.money -= data["value"]
                 response = {"id_in_group": my_id,
