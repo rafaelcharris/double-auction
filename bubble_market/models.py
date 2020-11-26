@@ -41,23 +41,30 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
 
-    assets = models.IntegerField()
+    assets = models.IntegerField(initial = 0)
     money = models.CurrencyField(initial = Constants.endowment)
 
     def live_auction(self, data):
         if data["type"] == "bid":
             group = self.group
             my_id = self.id_in_group
-            if data["value"] < group.highest_bid:
-                response = {"type":"error", "message":"New bids must be higher"}
-                return {self.id_in_group: response}
-            else:
-                if data["value"] > group.highest_bid:
-                    response = {"id_in_group":my_id,
-                                "type": "bid",
-                                "value":data["value"]}
 
-                    return {0: response}
+            if data["value"] > group.highest_bid:
+                group.highest_bidder = my_id
+                response = {"id_in_group": my_id,
+                            "type": "bid",
+                            "value": data["value"]}
+                #group.highest_bid = data["value"]
+                ids = [i + 1 for i in range(len(group.get_players()))]
+                print(ids)
+                ids.remove(my_id)
+                #This should send this information to all the other players
+                return {i: response for i in ids}
+            else:
+                response = {"type":"error",
+                            "message":"New bids must be higher"}
+                return {self.id_in_group: response}
+
         elif data["type"] == "ask":
             group = self.group
             my_id = self.id_in_group
@@ -66,11 +73,11 @@ class Player(BasePlayer):
                             "type": "ask",
                             "value":data["value"]}
                 return {0: response}
-        else:
+        elif data["type"] == "contract":
             my_id = self.id_in_group
             self.assets += 1
-            self.money -= data["value"]
-            if data["value"] <= Constants.endowment:
+            if data["value"] <= self.money:
+                self.money -= data["value"]
                 response = {"id_in_group": my_id,
                             "type": "contract",
                             "value": data["value"],

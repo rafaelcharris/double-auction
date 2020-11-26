@@ -64,7 +64,16 @@ Price: <input id="ask_box" type="number">
   </div>
 <div class = "row">
     <div class = "col">
-
+<table id="own_bid" class="table">
+    <thead>
+    <tr>
+        <td colspan = "2"><h5>Your Bids</h5></td>
+    </tr>
+    </thead>
+  <tr>
+    <th>Bid</th>
+  </tr>
+</table>
     </div>
     <div class = "col">
     <table id = "information" class = "table">
@@ -99,20 +108,24 @@ Price: <input id="ask_box" type="number">
     let ask_button = document.getElementById('ask_button');
 
     let history = document.getElementById('history');
-    let sell_asset = document.getElementById('bid_box');
+    // let sell_asset = document.getElementById('sell_asset');
     //let ask_button = document.getElementById('ask_button');
 
     function liveRecv(data) {
         if (data.type == "bid"){
             history_bid.innerHTML += '<tr><td>' + data.id_in_group + '</td><td>' + data.value + '</td></tr>';
-            document.getElementById("sell_ask_button").innerHTML = 'Sell Asset at: ' + data.value
+            document.getElementById("sell_ask_button").innerHTML = 'Sell Asset at: ' + data.value;
+            document.getElementById("sell_asset") = data.value;
+            console.log(history_bid)
         } else if (data.type == "ask"){
             history_ask.innerHTML += '<tr><td>' + data.id_in_group + '</td><td>' + data.value + '</td></tr>';
             document.getElementById("buy_bid_button").innerHTML = 'Buy Asset at: ' + data.value;
-        } else {
-            history_bid.innterHTML += ""
-            history.innerHTML += data.value + '</td></tr>';
-            // document.getElementById('sell_ask').value = data.value;
+        } else if (data.type == "contract"){
+            history_bid.innterHTML = ""
+            history.innerHTML += '</td></tr>'+ data.value + '</td></tr>';
+            // document.getElementById('sell_asset').value = data.value;
+        } else if (data.type == "error"){
+            console.log("error")
         }
     }
 
@@ -125,7 +138,7 @@ Price: <input id="ask_box" type="number">
     };
 
     sell_ask_button.onclick = function () {
-        liveSend({'value': parseInt(history_bid.value), 'type': "contract"});
+        liveSend({'value': parseInt(sell_asset.value), 'type': "contract"});
     };
 
 </script>
