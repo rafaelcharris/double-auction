@@ -30,6 +30,7 @@
 </table>
 Price: <input id="bid_box" type="number">
 <button type="button" id="bid_button" class="btn btn-primary">Submit Buy Price</button>
+
 <input id="buy_asset" type="hidden" type = "number">
 <button type="button" id="buy_bid_button" class="btn btn-success btn-block p-1">Buy Asset at </button>
 </div>
@@ -113,7 +114,7 @@ Price: <input id="ask_box" type="number">
 
     let history = document.getElementById('history');
     let sell_asset = document.getElementById('bid_box');
-    let ask_button = document.getElementById('ask_box');
+    let buy_asset = document.getElementById('ask_box');
 
     function liveRecv(data) {
         if (data.type == "bid"){
