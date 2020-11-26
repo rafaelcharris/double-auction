@@ -58,6 +58,7 @@ class Player(BasePlayer):
 
                 return {0: response}
             else:
+                print("This shuold return an error!")
                 response = {"type":"error",
                             "message":"New bids must be higher"}
                 return {self.id_in_group: response}
