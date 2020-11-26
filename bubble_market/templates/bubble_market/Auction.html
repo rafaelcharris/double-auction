@@ -70,12 +70,12 @@ Price: <input id="ask_box" type="number">
     <table id = "information" class = "table">
         <tr>
             <th><h5>Your Cash:</h5></th>
-            <th>{{ self.money }}</th>
+            <th> money </th>
         </tr>
 
         <tr>
             <th><h5>Number of Assets:</h5></th>
-            <th>{{ self.assets }}</th>
+            <th> assets </th>
         </tr>
     </table>
     </div>
@@ -125,7 +125,7 @@ Price: <input id="ask_box" type="number">
     };
 
     sell_ask_button.onclick = function () {
-        liveSend({'value': parseInt(bid_box.value), 'type': "contract"});
+        liveSend({'value': parseInt(history_bid.value), 'type': "contract"});
     };
 
 </script>

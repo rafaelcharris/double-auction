@@ -33,7 +33,7 @@ class Subsession(BaseSubsession):
 
 
 class Group(BaseGroup):
-    fundamental_value = models.IntegerField()
+    fundamental_value = models.CurrencyField()
     highest_bidder = models.IntegerField()
     highest_bid = models.CurrencyField(initial=0)
     lowest_ask = models.CurrencyField(initial = 100)
@@ -42,18 +42,22 @@ class Group(BaseGroup):
 class Player(BasePlayer):
 
     assets = models.IntegerField()
-    money = models.IntegerField(initial = Constants.endowment)
+    money = models.CurrencyField(initial = Constants.endowment)
 
     def live_auction(self, data):
         if data["type"] == "bid":
             group = self.group
             my_id = self.id_in_group
-            if data["value"] > group.highest_bid:
-                response = {"id_in_group":my_id,
-                            "type": "bid",
-                            "value":data["value"]}
+            if data["value"] < group.highest_bid:
+                response = {"type":"error", "message":"New bids must be higher"}
+                return {self.id_in_group: response}
+            else:
+                if data["value"] > group.highest_bid:
+                    response = {"id_in_group":my_id,
+                                "type": "bid",
+                                "value":data["value"]}
 
-                return {0: response}
+                    return {0: response}
         elif data["type"] == "ask":
             group = self.group
             my_id = self.id_in_group
