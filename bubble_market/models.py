@@ -23,7 +23,7 @@ class Constants(BaseConstants):
     players_per_group = None
     num_rounds = 10
     fundamental_value = [0, 8, 28, 60]
-    endowment = 100
+    endowment = c(100)
     average_divided = sum(fundamental_value)/len(fundamental_value)
 class Subsession(BaseSubsession):
 
@@ -50,6 +50,7 @@ class Player(BasePlayer):
             my_id = self.id_in_group
 
             if data["value"] > group.highest_bid:
+                print("Highest bid: " + str(group.highest_bid))
                 group.highest_bidder = my_id
                 group.highest_bid = data["value"]
                 response = {"id_in_group": my_id,
@@ -75,7 +76,7 @@ class Player(BasePlayer):
         elif data["type"] == "contract":
             my_id = self.id_in_group
             self.assets += 1
-            self.group.highest_bid = 0 #Restablecer el valor de la highest bid a lo más bajo cuando se venda el paquete
+            #self.group.highest_bid = 0 #Restablecer el valor de la highest bid a lo más bajo cuando se venda el paquete
             if data["value"] <= self.money:
                 self.money -= data["value"]
                 response = {"id_in_group": my_id,
