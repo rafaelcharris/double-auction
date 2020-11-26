@@ -5,6 +5,9 @@ import time
 
 class Auction(Page):
     live_method = 'live_auction'
+    def vars_for_template(self):
+        return {"remaining_periods": Constants.num_rounds - self.group.round_number,
+                "av_divided": Constants.average_divided}
 
 class ResultsWaitPage(WaitPage):
     pass
