@@ -113,6 +113,8 @@ Price: <input id="ask_box" type="number">
 
     function liveRecv(data) {
         if (data.type == "bid"){
+            if (data.id_in_group == }) // este if debería ser algo así como if el id es distinto del del man, entonces no
+            history_bid.innerHTML += '<tr><td>' + data.id_in_group + '</td><td>' + data.value + '</td></tr>';
             history_bid.innerHTML += '<tr><td>' + data.id_in_group + '</td><td>' + data.value + '</td></tr>';
             document.getElementById("sell_ask_button").innerHTML = 'Sell Asset at: ' + data.value;
             document.getElementById("sell_asset") = data.value;

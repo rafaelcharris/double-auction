@@ -55,11 +55,8 @@ class Player(BasePlayer):
                             "type": "bid",
                             "value": data["value"]}
                 #group.highest_bid = data["value"]
-                ids = [i + 1 for i in range(len(group.get_players()))]
-                print(ids)
-                ids.remove(my_id)
-                #This should send this information to all the other players
-                return {i: response for i in ids}
+
+                return {0: response}
             else:
                 response = {"type":"error",
                             "message":"New bids must be higher"}
