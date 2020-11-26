@@ -23,8 +23,10 @@ class Constants(BaseConstants):
     players_per_group = None
     num_rounds = 10
     fundamental_value = [0, 8, 28, 60]
+    endowment = 100
 
 class Subsession(BaseSubsession):
+
     def creating_session(self):
         for group in self.get_groups():
             group.fundamental_value = random.choice(Constants.fundamental_value)
@@ -34,7 +36,7 @@ class Group(BaseGroup):
     fundamental_value = models.IntegerField()
     highest_bidder = models.IntegerField()
     highest_bid = models.CurrencyField(initial=0)
-    lowest_ask = models.CurrencyField(initial = 0)
+    lowest_ask = models.CurrencyField(initial = 100)
     lowest_asker = models.IntegerField()
 class Player(BasePlayer):
 
@@ -50,13 +52,22 @@ class Player(BasePlayer):
                             "value":data["value"]}
 
                 return {0: response}
-        else:
+        elif data["type"] == "ask":
             group = self.group
             my_id = self.id_in_group
             if data["value"] < group.lowest_ask:
                 response = {"id_in_group":my_id,
                             "type": "ask",
                             "value":data["value"]}
+                return {0: response}
+        else:
+            my_id = self.id_in_group
+            self.assets += 1
+            if data["value"] <= Constants.endowment:
+                response = {"id_in_group": my_id,
+                            "type": "contract",
+                            "value": data["value"],
+                            "assets": self.assets}
                 return {0: response}
 
 #    def bids(self):

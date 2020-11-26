@@ -13,8 +13,8 @@
             <th>Periods remaining</th>
         </tr>
     </table>
-
 </div>
+
 <div class = "container-fluid">
   <div class = "row">
     <div class="col">
@@ -31,18 +31,19 @@
 </table>
 Price: <input id="bid_box" type="number">
 <button type="button" id="bid_button" class="btn btn-primary">Submit Buy Price</button>
-<input id="buy_bid" type="number">
-<button type="button" id="buy_bid_button" class="btn btn-success">Buy Asset at </button>
+<input id="buy_bid" type="hidden" type = "number">
+<button type="button" id="buy_bid_button" class="btn btn-success btn-block">Buy Asset at </button>
     </div>
+
 <div class="col-lg">
 <table id="history" class="table">
   <tr>
     <th><h5>Recent Transactions</h5></th>
   </tr>
-
 </table>
-    </div>
-    <div class="col-lg">
+</div>
+
+<div class="col-lg">
 <table id="history_ask" class="table">
     <thead>
     <tr>
@@ -56,8 +57,9 @@ Price: <input id="bid_box" type="number">
 </table>
 Price: <input id="ask_box" type="number">
 <button type="button" id="ask_button" class="btn btn-primary">Submit Ask price</button>
-<input id="sell_ask" type="number">
-<button type="button" id="sell_ask_button">Sell Asset at </button>
+
+    <input id="sell_ask" type="hidden" type = "number">
+<button type="button" id="sell_ask_button" class="btn btn-success btn-block">Sell Asset at </button>
     </div>
   </div>
 </div>
@@ -75,9 +77,20 @@ Price: <input id="ask_box" type="number">
     let ask_box = document.getElementById('ask_box');
     let ask_button = document.getElementById('ask_button');
 
+    let history = document.getElementById('history');
+    //let ask_box = document.getElementById('ask_box');
+    //let ask_button = document.getElementById('ask_button');
+
     function liveRecv(data) {
-        history_bid.innerHTML += '<tr><td>' + data.id_in_group + '</td><td>' + data.value + '</td></tr>';
-        history_ask.innerHTML += '<tr><td>' + data.id_in_group + '</td><td>' + data.value + '</td></tr>';
+        if (data.type == "bid"){
+            history_bid.innerHTML += '<tr><td>' + data.id_in_group + '</td><td>' + data.value + '</td></tr>';
+            document.getElementById("sell_ask_button").innerHTML = 'Sell Asset at: ' + data.value
+        } else if (data.type == "ask"){
+            history_ask.innerHTML += '<tr><td>' + data.id_in_group + '</td><td>' + data.value + '</td></tr>';
+            document.getElementById("buy_bid_button").innerHTML = 'Buy Asset at: ' + data.value;
+        } else{
+            history.innerHTML += '<tr><td>' + data.id_in_group + '</td><td>' + data.value + '</td></tr>';
+        }
     }
 
     bid_button.onclick = function () {
@@ -88,8 +101,8 @@ Price: <input id="ask_box" type="number">
         liveSend({'value': parseInt(ask_box.value), 'type': "ask"});
     };
 
-    ask_button.onclick = function () {
-        liveSend({'value': parseInt(ask_box.value), 'type': "ask"});
+    sell_ask_button.onclick = function () {
+        liveSend({'value': parseInt(history.value), 'type': "contract"});
     };
 
 </script>
