@@ -79,13 +79,13 @@ class Player(BasePlayer):
             #self.group.highest_bid = 0 #Restablecer el valor de la highest bid a lo más bajo cuando se venda el paquete
             if data["value"] <= self.money:
                 self.money -= data["value"]
-                response = {"id_in_group": my_id,
+                response1 = {"id_in_group": my_id,
                             "type": "contract",
                             "value": data["value"],
-                            "assets": self.assets,
+                             "assets": self.assets,
                             "money": self.money}
-                return {0: response}
-
+                return {my_id: response1}
+#todo: dos responses ?
     def bids(self):
         return Bid.objects.filter(player=self)
 

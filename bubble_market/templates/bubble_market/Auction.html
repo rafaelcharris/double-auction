@@ -24,6 +24,10 @@
         <td colspan = "2"><h5>Best Market Bid</h5></td>
     </tr>
     </thead>
+    <tr>
+    <th>Player</th>
+    <th>Ask</th>
+  </tr>
 </table>
 <table id="history_bid" class="table">
 
@@ -42,6 +46,7 @@ Price: <input id="bid_box" type="number">
         <td><h5>Recent Transactions Prices</h5></td>
     </tr>
     </thead>
+
 </table>
 </div>
 
@@ -70,17 +75,8 @@ Price: <input id="ask_box" type="number">
   </div>
 <div class = "row">
     <div class = "col">
-<table id="own_bid" class="table">
-    <thead>
-    <tr>
-        <td colspan = "2"><h5>Your Bids</h5></td>
-    </tr>
-    </thead>
-  <tr>
-    <th>Bid</th>
-  </tr>
-</table>
     </div>
+
     <div class = "col">
     <table id = "information" class = "table">
         <tr>
@@ -104,6 +100,8 @@ Price: <input id="ask_box" type="number">
 {% block global_scripts  %}
 <script>
     let isValid = liveform.reportValidity();
+    let var bid_button = false;
+
     let history_bid = document.getElementById('history_bid');
     let bid_box = document.getElementById('bid_box');
     let bid_button = document.getElementById('bid_button');
@@ -118,7 +116,6 @@ Price: <input id="ask_box" type="number">
 
     function liveRecv(data) {
         if (data.type == "bid"){
-            //if (data.id_in_group == }) // este if debería ser algo así como if el id es distinto del del man, entonces no
             history_bid.innerHTML = '<tr><td>' + data.id_in_group + '</td><td>' + data.value + '</td></tr>';
             document.getElementById("sell_ask_button").innerHTML = 'Sell Asset at: ' + data.value;
             document.getElementById("sell_asset") = data.value;
@@ -133,7 +130,7 @@ Price: <input id="ask_box" type="number">
             history_bid.innerHTML = " ";
             document.getElementById('sell_asset').value = data.value;
             //document.getElementById('buy_asset').value = data.value;
-            document.getElementById().innerHTML = '<th><h5>Your Cash:</h5></th>' + data.money;
+            document.getElementById("information").innerHTML = '<th><h5>Your Cash:</h5>' + data.money + '</th>';
 
         } else if (data.type == "error"){
             console.log("error");
@@ -150,11 +147,12 @@ Price: <input id="ask_box" type="number">
 
     sell_ask_button.onclick = function () {
         liveSend({'value': parseInt(sell_asset.value), 'type': "contract"});
-        //document.getElementById("historty_bid").innerHTML -= '';
+        bud_button = false;
     };
 
     buy_bid_button.onclick = function () {
         liveSend({'value': parseInt(ask_button.value), 'type': "contract"});
+        bid_button = true;
     };
 </script>
 {% endblock %}
