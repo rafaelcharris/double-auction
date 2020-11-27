@@ -86,13 +86,14 @@ class Player(BasePlayer):
                             "money": self.money}
                 return {0: response}
 
-#    def bids(self):
-#        return Bid.objects.filter(player=self)
-#
-#class Bid(ExtraModel):
-#    player = models.Link(Player)
-#    group = models.Link(Group)
+    def bids(self):
+        return Bid.objects.filter(player=self)
+
+class Bid(ExtraModel):
+    player = models.Link(Player)
+    group = models.Link(Group)
 
 #TODO: Hacer que se puedan comprar cosas
 #TODO: mostar info de las transacciones
 #TODO: Agregar límite de tiempo
+#TODO: Agregar botón de eliminar la bid o ask
