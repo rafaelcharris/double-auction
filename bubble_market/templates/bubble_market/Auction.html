@@ -154,12 +154,12 @@ Price: <input id="ask_box" type="number">
     };
 
     sell_ask_button.onclick = function () {
-        liveSend({'value': parseInt(sell_asset.value), 'type': "contract"});
+        liveSend({'value': parseInt(sell_asset.value), 'type': "contract", 'seller':, buyer':});
         press_buy = false;
     };
 
     buy_bid_button.onclick = function () {
-        liveSend({'value': parseInt(ask_button.value), 'type': "contract"});
+        liveSend({'value': parseInt(ask_button.value), 'type': "contract", 'buyer':});
         press_buy = true;
     };
 </script>
