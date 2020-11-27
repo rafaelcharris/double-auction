@@ -78,7 +78,7 @@ Price: <input id="ask_box" type="number">
     </div>
 
     <div class = "col">
-    <table id = "information" class = "table">
+    <table id = "cash" class = "table">
         <tr>
             <th><h5>Your Cash: </h5></th>
             <th>{{initial_amount}}</th>
@@ -130,8 +130,8 @@ Price: <input id="ask_box" type="number">
             history_bid.innerHTML = " ";
             document.getElementById('sell_asset').value = data.value;
             //document.getElementById('buy_asset').value = data.value;
-            document.getElementById("information").innerHTML = '<th><h5>Your Cash:</h5>' + data.money + '</th>';
-
+            document.getElementById("cash").innerHTML = '<tr><th><h5>Your Cash:</h5></th>' + '<th>' + data.money + '</th></tr>';
+            document.getElementById("assets").innerHTML = '<tr><th><h5>Your Assets:</h5></th>' + '<th>' + data.assets + '</th></tr>';
         } else if (data.type == "error"){
             console.log("error");
         }
