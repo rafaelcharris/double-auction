@@ -1,7 +1,6 @@
 {% extends "otree/Page.html" %}
 {% load otree static %}
 
-
 {% block global_styles  %}
 <h1>Period {{subsession.round_number}}</h1>
 <hr>
@@ -26,7 +25,7 @@
     </thead>
     <tr>
     <th>Player</th>
-    <th>Ask</th>
+    <th>Bid</th>
   </tr>
 </table>
 <table id="history_bid" class="table">
@@ -68,7 +67,7 @@ Price: <input id="bid_box" type="number">
 </table>
 Price: <input id="ask_box" type="number">
 <button type="button" id="ask_button" class="btn btn-primary">Submit Ask price</button>
-
+<!---This hidden input should have the amount of the highest bid --->
     <input id="sell_asset" type="hidden" type = "number">
 <button type="button" id="sell_ask_button" class="btn btn-success btn-block mr-1">Sell Asset at </button>
     </div>
@@ -83,6 +82,8 @@ Price: <input id="ask_box" type="number">
             <th><h5>Your Cash: </h5></th>
             <th>{{initial_amount}}</th>
         </tr>
+    </table>
+    <table id = "assets" class = "table">
         <tr>
             <th><h5>Number of Assets:</h5></th>
             <th> {{initial_assets}} </th>
@@ -100,7 +101,7 @@ Price: <input id="ask_box" type="number">
 {% block global_scripts  %}
 <script>
     let isValid = liveform.reportValidity();
-    let var bid_button = false;
+    let press_buy = false;
 
     let history_bid = document.getElementById('history_bid');
     let bid_box = document.getElementById('bid_box');
@@ -127,9 +128,16 @@ Price: <input id="ask_box" type="number">
 
         } else if (data.type == "contract"){
             history.innerHTML += '<tr><td>' + data.value + '</td></tr>';
-            history_bid.innerHTML = " ";
-            document.getElementById('sell_asset').value = data.value;
-            //document.getElementById('buy_asset').value = data.value;
+
+            if (press_buy){
+                document.getElementById('buy_asset').value = data.value;
+                history_ask.innerHTML = " ";
+                // creo que también me toca cambiar el valor de nuevo a cero
+            } else {
+                document.getElementById('sell_asset').value = data.value;
+                history_bid.innerHTML = " ";
+            }
+
             document.getElementById("cash").innerHTML = '<tr><th><h5>Your Cash:</h5></th>' + '<th>' + data.money + '</th></tr>';
             document.getElementById("assets").innerHTML = '<tr><th><h5>Your Assets:</h5></th>' + '<th>' + data.assets + '</th></tr>';
         } else if (data.type == "error"){
@@ -147,12 +155,12 @@ Price: <input id="ask_box" type="number">
 
     sell_ask_button.onclick = function () {
         liveSend({'value': parseInt(sell_asset.value), 'type': "contract"});
-        bud_button = false;
+        press_buy = false;
     };
 
     buy_bid_button.onclick = function () {
         liveSend({'value': parseInt(ask_button.value), 'type': "contract"});
-        bid_button = true;
+        press_buy = true;
     };
 </script>
 {% endblock %}

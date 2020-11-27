@@ -50,7 +50,6 @@ class Player(BasePlayer):
             my_id = self.id_in_group
 
             if data["value"] > group.highest_bid:
-                print("Highest bid: " + str(group.highest_bid))
                 group.highest_bidder = my_id
                 group.highest_bid = data["value"]
                 response = {"id_in_group": my_id,
@@ -60,7 +59,7 @@ class Player(BasePlayer):
 
                 return {0: response}
             else:
-                print("This shuold return an error!")
+                print("This should return an error!. Current Bid: " + str(data["value"]) + "\nHighest bid: " + str(group.highest_bid))
                 response = {"type":"error",
                             "message":"New bids must be higher"}
                 return {self.id_in_group: response}
@@ -76,15 +75,15 @@ class Player(BasePlayer):
         elif data["type"] == "contract":
             my_id = self.id_in_group
             self.assets += 1
-            #self.group.highest_bid = 0 #Restablecer el valor de la highest bid a lo más bajo cuando se venda el paquete
+            self.group.highest_bid = 0 #Restablecer el valor de la highest bid a lo más bajo cuando se venda el paquete
             if data["value"] <= self.money:
                 self.money -= data["value"]
-                response1 = {"id_in_group": my_id,
+                response = {"id_in_group": my_id,
                             "type": "contract",
                             "value": data["value"],
                              "assets": self.assets,
                             "money": self.money}
-                return {my_id: response1}
+                return {my_id: response}
 #todo: dos responses ?
     def bids(self):
         return Bid.objects.filter(player=self)
