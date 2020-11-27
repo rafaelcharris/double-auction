@@ -51,12 +51,12 @@ class Player(BasePlayer):
 
             if data["value"] > group.highest_bid:
                 group.highest_bidder = my_id
+                print("Highest Bidder is player: " + str(my_id))
                 group.highest_bid = data["value"]
                 response = {"id_in_group": my_id,
                             "type": "bid",
                             "value": data["value"]}
                 #group.highest_bid = data["value"]
-
                 return {0: response}
             else:
                 print("This should return an error!. Current Bid: " + str(data["value"]) + "\nHighest bid: " + str(group.highest_bid))
@@ -68,22 +68,47 @@ class Player(BasePlayer):
             group = self.group
             my_id = self.id_in_group
             if data["value"] < group.lowest_ask:
+                group.lowest_asker = my_id
                 response = {"id_in_group":my_id,
                             "type": "ask",
                             "value":data["value"]}
                 return {0: response}
+
         elif data["type"] == "contract":
-            my_id = self.id_in_group
-            self.assets += 1
-            self.group.highest_bid = 0 #Restablecer el valor de la highest bid a lo más bajo cuando se venda el paquete
+            print("This is data: " + str(data))
+             #Restablecer el valor de la highest bid a lo más bajo cuando se venda el paquete
             if data["value"] <= self.money:
-                self.money -= data["value"]
-                response = {"id_in_group": my_id,
+                if data["action"] == "press_buy":
+                    self.group.lowest_bidder = self.player.id_in_group
+                else:
+                    self.group.highest_bid = self.player.id_in_group
+                #El problema es que lowest asker cambia cuando pasan dos cosas: 1
+                #Definir quién vendió y quién compró
+                buyer = self.group.get_player_by_id(self.group.highest_bidder)
+                seller = self.group.get_player_by_id(self.group.lowest_asker)
+                #Cambiar el dinero
+                buyer.money -= data["value"]
+                seller.money += data["value"]
+                #Cambiar los assets
+                buyer.assets += 1
+                seller.assets -= 1
+                #Restablecer el valor de highest bid
+                self.group.highest_bid = 0
+                self.group.lowest_ask = 100
+
+                response_me = {"id_in_group": buyer.id_in_group,
                             "type": "contract",
                             "value": data["value"],
-                             "assets": self.assets,
-                            "money": self.money}
-                return {my_id: response}
+                             "assets": buyer.assets,
+                            "money": buyer.money}
+                response_all = {
+                               "type": "contract",
+                               "value": data["value"]}
+
+                response = {player: response_all for player in self.group.get_players()}
+                response.update({buyer.id_in_group: response_me})
+                print("This is what response looks like: " + str(response))
+                return response
 #todo: dos responses ?
     def bids(self):
         return Bid.objects.filter(player=self)
