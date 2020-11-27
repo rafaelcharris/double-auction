@@ -95,5 +95,5 @@ class Bid(ExtraModel):
 
 #TODO: Hacer que se puedan comprar cosas
 #TODO: mostar info de las transacciones
-#TODO: Agregar límite de tiempo
+
 #TODO: Agregar botón de eliminar la bid o ask

@@ -34,7 +34,10 @@ class ResultsWaitPage(WaitPage):
 
 
 class Results(Page):
-    pass
+
+    def is_displayed(self):
+        if self.round_number == Constants.num_rounds:
+            return True
 
 
 page_sequence = [Instructions, Auction, ResultsWaitPage, Results]

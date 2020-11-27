@@ -103,7 +103,7 @@ Price: <input id="ask_box" type="number">
 
 {% block global_scripts  %}
 <script>
-
+    let isValid = liveform.reportValidity();
     let history_bid = document.getElementById('history_bid');
     let bid_box = document.getElementById('bid_box');
     let bid_button = document.getElementById('bid_button');
