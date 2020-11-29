@@ -77,6 +77,11 @@ class Player(BasePlayer):
             print("Ask data: "+str(data))
             group = self.group
             my_id = self.id_in_group
+            if self.assets - 1 < 0:
+                response = {"type": "error",
+                            "message": "You don't have assets to sell",
+                            }
+                return {self.id_in_group: response}
             if data["value"] < group.lowest_ask:
                 group.lowest_asker = my_id
                 group.lowest_ask = data["value"]
@@ -111,39 +116,31 @@ class Player(BasePlayer):
                     seller.money += data["value"]
                     buyer.assets += 1
                     seller.assets -= 1
-                    # Cambiar los assets
-                    if seller.assets < 0:
-                        response_seller = {"type": "error",
-                                           "message": "You cannot sell more assets",
-                                           "error_code": 2}
-                        buyer.money += data["value"]
-                        seller.money -= data["value"]
-                        buyer.assets -= 1
-                        seller.assets += 1
-                        return {seller.id_in_group: response_seller}
-                    else:
-                        # Restablecer el valor de highest bid
-                        self.group.highest_bid = 0
-                        self.group.lowest_ask = Constants.endowment
 
-                        response_seller = {"id_in_group": seller.id_in_group,
-                                           "type": "contract",
-                                           "value": data["value"],
-                                           "assets": seller.assets,
-                                           "money": seller.money}
-                        response_buyer = {"id_in_group": buyer.id_in_group,
-                                          "type": "contract",
-                                          "value": data["value"],
-                                          "assets": buyer.assets,
-                                          "money": buyer.money}
-                        response_all = {
-                            "type": "contract",
-                            "value": data["value"]}
+                    # Restablecer el valor de highest bid
+                    self.group.highest_bid = 0
+                    self.group.lowest_ask = Constants.endowment
 
-                        response = {player.id_in_group: response_all for player in self.group.get_players()}
-                        response.update({buyer.id_in_group: response_buyer, seller.id_in_group: response_seller})
-                        print("This is the response from a contract" + str(response))
-                        return response
+                    response_seller = {"id_in_group": seller.id_in_group,
+                                       "type": "contract",
+                                       "value": data["value"],
+                                       "assets": seller.assets,
+                                       "money": seller.money,
+                                       "deal": True}
+                    response_buyer = {"id_in_group": buyer.id_in_group,
+                                      "type": "contract",
+                                      "value": data["value"],
+                                      "assets": buyer.assets,
+                                      "money": buyer.money,
+                                      "deal": True}
+                    response_all = {
+                        "type": "contract",
+                        "value": data["value"]}
+
+                    response = {player.id_in_group: response_all for player in self.group.get_players()}
+                    response.update({buyer.id_in_group: response_buyer, seller.id_in_group: response_seller})
+                    print("This is the response from a contract" + str(response))
+                    return response
                 else:
                     print("debería mandar error")
                     response = {"type":"error",
@@ -176,6 +173,7 @@ class Player(BasePlayer):
                         response_seller = {"type": "error",
                                            "message": "You cannot sell more assets",
                                            "error_code": 2}
+                        #devolver los valores a su anterior valor
                         buyer.money += data["value"]
                         seller.money -= data["value"]
                         buyer.assets -= 1
@@ -190,15 +188,18 @@ class Player(BasePlayer):
                                        "type": "contract",
                                        "value": data["value"],
                                        "assets": seller.assets,
-                                       "money": seller.money}
+                                       "money": seller.money,
+                                        "deal": True}
                         response_buyer = {"id_in_group": buyer.id_in_group,
                                            "type": "contract",
                                            "value": data["value"],
                                            "assets": buyer.assets,
-                                           "money": buyer.money}
+                                           "money": buyer.money,
+                                          "deal": True}
                         response_all = {
                             "type": "contract",
-                            "value": data["value"]}
+                            "value": data["value"],
+                            "deal": False}
 
                         response = {player.id_in_group: response_all for player in self.group.get_players()}
                         response.update({buyer.id_in_group: response_buyer, seller.id_in_group: response_seller})
