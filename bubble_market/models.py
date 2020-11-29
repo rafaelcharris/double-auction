@@ -48,18 +48,19 @@ class Group(BaseGroup):
     def set_mean_price(self):
         values = []
         for player in self.get_players():
-            values.append(player.closed_prices)
+            print("Here I have players price: " + str(player.participant.vars["prices"]))
+            values.append(player.participant.vars["prices"])
         mp = sum(values)/len(values)
         #Set the value to the variable
         self.mean_price = mp
-
+        print("mean price: " + str(mp))
     mean_price = models.IntegerField()
 
 class Player(BasePlayer):
 
     assets = models.IntegerField(initial = Constants.assets)
     money = models.CurrencyField(initial = Constants.endowment)
-    closed_prices = []
+
     def live_auction(self, data):
         if data["type"] == "bid":
             print("Ask data: " + str(data))
@@ -142,7 +143,9 @@ class Player(BasePlayer):
                     # Restablecer el valor de highest bid
                     self.group.highest_bid = 0
                     self.group.lowest_ask = Constants.endowment
-
+                    self.participant.vars["prices"] = []
+                    self.participant.vars["prices"].append(data["value"])
+                    print("here is the price of this transaction" + str(self.participant.vars["prices"]))
                     response_seller = {"id_in_group": seller.id_in_group,
                                        "type": "contract",
                                        "value": data["value"],
@@ -213,8 +216,8 @@ class Player(BasePlayer):
                         self.group.highest_bid = 0
                         self.group.lowest_ask = Constants.endowment
                         #store the current price in a way
-                        prices = []
-                        prices.append(data["value"])
+                        self.participant.vars["prices"] = []
+                        self.participant.vars["prices"].append(data["value"])
                         response_seller = {"id_in_group": seller.id_in_group,
                                        "type": "contract",
                                        "value": data["value"],
@@ -248,3 +251,4 @@ class Player(BasePlayer):
 
 
 #TODO: Agregar botón de eliminar la bid o ask
+# https://groups.google.com/g/otree/c/NyPsNsEpXu0/m/w1PsVNB2DwAJ SOLUACION A LA STORE DE VALUES
