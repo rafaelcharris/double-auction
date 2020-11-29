@@ -34,7 +34,7 @@ class Auction(Page):
         return self.session.vars['expiry'] - time.time() > 0
 
 class ResultsWaitPage(WaitPage):
-    pass
+    after_all_players_arrive = 'set_payoffs'
 
 
 class Results(Page):

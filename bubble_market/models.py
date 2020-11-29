@@ -41,6 +41,11 @@ class Group(BaseGroup):
     lowest_ask = models.CurrencyField(initial = 100)
     lowest_asker = models.IntegerField()
 
+    def set_payoffs(self):
+        for player in self.get_players():
+            player.payoff = player.assets*self.group.fundamental_value + player.money
+
+
 class Player(BasePlayer):
 
     assets = models.IntegerField(initial = Constants.assets)
