@@ -60,16 +60,14 @@ class Player(BasePlayer):
                             "type": "bid",
                             "value": data["value"]}
                 #group.highest_bid = data["value"]
-                print("Response form bid: " + str(response))
+                print("Response from bid: " + str(response))
                 return {0: response}
             else:
-                print("This should return an error!. Current Bid: " + str(data["value"]) + "\nHighest bid: " + str(group.highest_bid))
                 response = {"type":"error",
                             "message":"New bids must be higher"}
                 return {self.id_in_group: response}
 
         elif data["type"] == "ask":
-            print("This is how data from Ask looks like: " + str(data))
             group = self.group
             my_id = self.id_in_group
             if data["value"] < group.lowest_ask:
@@ -77,16 +75,21 @@ class Player(BasePlayer):
                 response = {"id_in_group":my_id,
                             "type": "ask",
                             "value":data["value"]}
-                print("Response form ask: " + str(response))
+                print("Response from ask: " + str(response))
                 return {0: response}
 
         elif data["type"] == "contract":
              #Restablecer el valor de la highest bid a lo más bajo cuando se venda el paquete
-            if data["value"] <= self.money:
-                if data["action"] == "press_buy":
-                    self.group.highest_bidder = self.id_in_group
-                else:
-                    self.group.lowest_asker = self.id_in_group
+            print("Received a contract!")
+            if data["action"] == "press_buy":
+                print("The player pressed buy")
+                self.group.highest_bidder = self.id_in_group
+                if data["value"] <= self.money:
+                    print("Player " + str(self.id_in_group) + " has enough money.")
+
+            else:
+                self.group.lowest_asker = self.id_in_group
+                print("The player pressed buy")
                 #El problema es que lowest asker cambia cuando pasan dos cosas: 1
                 #Definir quién vendió y quién compró
                 print("This is the highest bidder: " + str(self.group.highest_bidder))
@@ -103,10 +106,12 @@ class Player(BasePlayer):
                     response_seller =  {"type":"error",
                             "message":"You cannot sell more assets",
                                         "error_code": 2}
-
+                    buyer.money += data["value"]
+                    seller.money -= data["value"]
+                    buyer.assets -= 1
+                    seller.assets += 1
                     return {seller.id_in_group, response_seller}
                 else:
-
                     #Restablecer el valor de highest bid
                     self.group.highest_bid = 0
                     self.group.lowest_ask = 100
