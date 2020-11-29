@@ -150,7 +150,10 @@ Price: <input id="ask_box" type="number">
             //alert("error. Your bid is too low");
             if (data.error_code == 2){
             alert(data.message);
+            } else if (data.error_code == 1) {
+            alert(data.message);
             }
+
         }
     }
 

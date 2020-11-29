@@ -64,7 +64,8 @@ class Player(BasePlayer):
                 return {0: response}
             else:
                 response = {"type":"error",
-                            "message":"New bids must be higher"}
+                            "message":"New bids must be higher",
+                            "error_code": 1}
                 return {self.id_in_group: response}
 
         elif data["type"] == "ask":
