@@ -46,7 +46,7 @@ class Group(BaseGroup):
             player.payoff = player.assets*self.fundamental_value + player.money
 
     def set_mean_price(self):
-        print("the Contract prices are: " + str(self.contract_prices))
+        pass
 
 
 class Player(BasePlayer):
@@ -137,6 +137,9 @@ class Player(BasePlayer):
                     self.group.highest_bid = 0
                     self.group.lowest_ask = Constants.endowment
 
+                    group = self.group
+                    ContractValue.objects.create(value=data["value"], group=group, round = group.round_number)
+
                     response_seller = {"id_in_group": seller.id_in_group,
                                        "type": "contract",
                                        "value": data["value"],
@@ -207,7 +210,8 @@ class Player(BasePlayer):
                         self.group.highest_bid = 0
                         self.group.lowest_ask = Constants.endowment
                         #store the current price in a way
-
+                        group = self.group
+                        ContractValue.objects.create(value=data["value"], group=group, round=group.round_number)
                         response_seller = {"id_in_group": seller.id_in_group,
                                        "type": "contract",
                                        "value": data["value"],
@@ -239,7 +243,10 @@ class Player(BasePlayer):
                                 "error_code": 4}
                     return {self.id_in_group: response}
 
-
+class ContractValue(models.ExtraModel):
+    value = models.IntegerField()
+    group = models.Link(Group)
+    round = models.IntegerField()
 #TODO: Agregar botón de eliminar la bid o ask
 # https://groups.google.com/g/otree/c/NyPsNsEpXu0/m/w1PsVNB2DwAJ SOLUACION A LA STORE DE VALUES -> Use this when the
 # thing is received
