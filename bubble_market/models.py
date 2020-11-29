@@ -33,7 +33,8 @@ class Subsession(BaseSubsession):
         for group in self.get_groups():
             group.fundamental_value = random.choice(Constants.fundamental_value)
 
-
+        for p in self.get_players():
+            p.participant.vars["accumulated_assets"] = 0
 class Group(BaseGroup):
     fundamental_value = models.CurrencyField()
     highest_bidder = models.IntegerField()
@@ -140,18 +141,19 @@ class Player(BasePlayer):
 
                     group = self.group
                     ContractValue.objects.create(value=data["value"], group=group, round = group.round_number)
-
+                    seller.participant.vars["accumulated_assets"]  += seller.asset
+                    buyer.participant.vars["accumulated_assets"] += buyer.asset
                     response_seller = {"id_in_group": seller.id_in_group,
                                        "type": "contract",
                                        "value": data["value"],
-                                       "assets": seller.assets,
+                                       "assets": seller.participant.vars["accumulated_assets"],
                                        "money": seller.money,
                                        "deal": True,
                                        "action": "press_buy"}
                     response_buyer = {"id_in_group": buyer.id_in_group,
                                       "type": "contract",
                                       "value": data["value"],
-                                      "assets": buyer.assets,
+                                      "assets": buyer.participant.vars["accumulated_assets"],
                                       "money": buyer.money,
                                       "deal": True,
                                       "action": "press_buy"}
@@ -253,6 +255,7 @@ class ContractValue(ExtraModel):
 # https://groups.google.com/g/otree/c/NyPsNsEpXu0/m/w1PsVNB2DwAJ SOLUACION A LA STORE DE VALUES -> Use this when the
 # thing is received
 
-def custom_export(group):
+def custom_export(groups):
     for contract in ContractValue.objects.values():
-        yield[contract, group.round_number]
+        print(str(ContractValue.objects.values()) + " type " + str(type(ContractValue.objects.values())))
+        yield[contract]
