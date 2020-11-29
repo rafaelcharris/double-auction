@@ -115,8 +115,7 @@ Price: <input id="ask_box" type="number">
     let ask_button = document.getElementById('ask_button');
 
     let history = document.getElementById('history');
-    let sell_asset = document.getElementById("sell_asset");
-    let buy_asset = document.getElementById("buy_asset");
+
 
     let highest_bidder = document.getElementById('highest_bidder');
     let lowest_asker = document.getElementById('lowest_asker');
@@ -127,14 +126,12 @@ Price: <input id="ask_box" type="number">
             console.log(data)
             history_bid.innerHTML = '<tr><td>' + data.id_in_group + '</td><td>' + data.value + '</td></tr>';
             document.getElementById("sell_ask_button").innerHTML = 'Sell Asset at: ' + data.value;
-            document.getElementById("sell_asset") = data.value;
-            document.getElementById("highest_bidder") = data.id_in_group;
+            //document.getElementById("highest_bidder") = data.id_in_group;
         } else if (data.type == "ask"){
             console.log(data)
             history_ask.innerHTML = '<tr><td>' + data.id_in_group + '</td><td>' + data.value + '</td></tr>';
             document.getElementById("buy_bid_button").innerHTML = 'Buy Asset at: ' + data.value;
-            document.getElementById("buy_asset") = data.value;
-            document.getElementById("lowest_asker") = data.id_in_group;
+            //document.getElementById("lowest_asker") = data.id_in_group;
         } else if (data.type == "contract"){
             console.log(data);
             history.innerHTML += '<tr><td>' + data.value + '</td></tr>';
@@ -153,10 +150,12 @@ Price: <input id="ask_box" type="number">
 
     bid_button.onclick = function () {
         liveSend({'value': parseInt(bid_box.value), 'type': "bid"});
+        document.getElementById("sell_asset") = data.value;
     };
 
     ask_button.onclick = function () {
         liveSend({'value': parseInt(ask_box.value), 'type': "ask"});
+        document.getElementById("buy_asset") = data.value;
     };
 
     sell_ask_button.onclick = function () {
