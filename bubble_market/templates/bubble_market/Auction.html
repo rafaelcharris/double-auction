@@ -99,6 +99,7 @@ Price: <input id="ask_box" type="number">
 </div>
 </div>
 
+<input  type="hidden" id="contract_prices" name="contract_prices" />
 
 {% endblock %}
 
@@ -126,6 +127,7 @@ Price: <input id="ask_box" type="number">
     let highest_bidder = document.getElementById('highest_bidder');
     let lowest_asker = document.getElementById('lowest_asker');
 
+    var aNumber = [];
 
     function liveRecv(data) {
         if (data.type == "bid"){
@@ -146,10 +148,15 @@ Price: <input id="ask_box" type="number">
             if (data.action == "press_buy"){
                 history_ask.innerHTML = " ";
                 document.getElementById("buy_bid_button").innerHTML = 'Buy Asset at: ';
+                // this should append a list to the aNumber variable
+                aNumber.push(document.getElementById("sell_asset").value)
+                document.getElementById('contract_prices').value = JSON.stringify(aNumber);
                 document.getElementById("sell_asset").value = 0;
             } else {
                 history_bid.innerHTML = " ";
+                aNumber.push(document.getElementById("buy_asset").value)
                 document.getElementById("buy_asset").value = 0;
+                document.getElementById('contract_prices').value = JSON.stringify(aNumber);
                 document.getElementById("sell_ask_button").innerHTML = 'Sell Asset at: ';
             }
             if (data.deal){
