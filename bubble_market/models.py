@@ -49,6 +49,7 @@ class Group(BaseGroup):
         pass
 
 
+
 class Player(BasePlayer):
 
     assets = models.IntegerField(initial = Constants.assets)
@@ -212,6 +213,7 @@ class Player(BasePlayer):
                         #store the current price in a way
                         group = self.group
                         ContractValue.objects.create(value=data["value"], group=group, round=group.round_number)
+                        print("This is the new object :" + str(ContractValue.value))
                         response_seller = {"id_in_group": seller.id_in_group,
                                        "type": "contract",
                                        "value": data["value"],
@@ -243,10 +245,14 @@ class Player(BasePlayer):
                                 "error_code": 4}
                     return {self.id_in_group: response}
 
-class ContractValue(models.ExtraModel):
+class ContractValue(ExtraModel):
     value = models.IntegerField()
     group = models.Link(Group)
     round = models.IntegerField()
 #TODO: Agregar botón de eliminar la bid o ask
 # https://groups.google.com/g/otree/c/NyPsNsEpXu0/m/w1PsVNB2DwAJ SOLUACION A LA STORE DE VALUES -> Use this when the
 # thing is received
+
+def custom_export(group):
+    for contract in ContractValue.objects.values():
+        yield[contract, group.round_number]
