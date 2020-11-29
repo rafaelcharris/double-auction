@@ -137,11 +137,11 @@ Price: <input id="ask_box" type="number">
             history.innerHTML += '<tr><td>' + data.value + '</td></tr>';
 
             if (press_buy){
-                document.getElementById('buy_asset').value = data.value;
+                //document.getElementById('buy_asset').value = data.value;
                 history_ask.innerHTML = " ";
                 // creo que también me toca cambiar el valor de nuevo a cero
             } else {
-                document.getElementById('sell_asset').value = data.value;
+                //document.getElementById('sell_asset').value = data.value;
                 history_bid.innerHTML = " ";
             }
             document.getElementById("cash").innerHTML = '<tr><th><h5>Your Cash:</h5></th>' + '<th>' + data.money + '</th></tr>';
@@ -163,12 +163,12 @@ Price: <input id="ask_box" type="number">
     };
 
     sell_ask_button.onclick = function () {
-        liveSend({'value': parseInt(sell_asset.value), 'type': "contract", 'action': "press_sell"});
+        liveSend({'value': parseInt(buy_asset.value), 'type': "contract", 'action': "press_sell"});
         press_buy = false;
     };
 
     buy_bid_button.onclick = function () {
-        liveSend({'value': parseInt(buy_asset.value), 'type': "contract", 'action': "press_buy"});
+        liveSend({'value': parseInt(sell_asset.value), 'type': "contract", 'action': "press_buy"});
         press_buy = true;
     };
 </script>

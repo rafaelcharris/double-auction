@@ -25,7 +25,7 @@ class Constants(BaseConstants):
     fundamental_value = [0, 8, 28, 60]
     endowment = 100
     average_divided = sum(fundamental_value)/len(fundamental_value)
-    assets = 5
+    assets = 1
 
 class Subsession(BaseSubsession):
 
