@@ -6,7 +6,7 @@ SESSION_CONFIGS = [
         display_name="Market",
         num_demo_participants=3,
         app_sequence=['bubble_market'],
-        time_limit = 60
+        time_limit = 600
      ),
 ]
 

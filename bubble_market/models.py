@@ -23,7 +23,7 @@ class Constants(BaseConstants):
     players_per_group = None
     num_rounds = 10
     fundamental_value = [0, 8, 28, 60]
-    endowment = c(100)
+    endowment = 100
     average_divided = sum(fundamental_value)/len(fundamental_value)
 class Subsession(BaseSubsession):
 
@@ -58,6 +58,7 @@ class Player(BasePlayer):
                             "type": "bid",
                             "value": data["value"]}
                 #group.highest_bid = data["value"]
+                print("Response form bid: " + str(response))
                 return {0: response}
             else:
                 print("This should return an error!. Current Bid: " + str(data["value"]) + "\nHighest bid: " + str(group.highest_bid))
@@ -74,6 +75,7 @@ class Player(BasePlayer):
                 response = {"id_in_group":my_id,
                             "type": "ask",
                             "value":data["value"]}
+                print("Response form ask: " + str(response))
                 return {0: response}
 
         elif data["type"] == "contract":
@@ -87,6 +89,8 @@ class Player(BasePlayer):
                     self.group.lowest_asker = self.id_in_group
                 #El problema es que lowest asker cambia cuando pasan dos cosas: 1
                 #Definir quién vendió y quién compró
+                print("This is the highest bidder: " + str(self.group.highest_bidder))
+                print("This is the lowest bidder: " + str(self.group.lowest_asker))
                 buyer = self.group.get_player_by_id(self.group.highest_bidder)
                 seller = self.group.get_player_by_id(self.group.lowest_asker)
                 #Cambiar el dinero
@@ -108,10 +112,11 @@ class Player(BasePlayer):
                                "type": "contract",
                                "value": data["value"]}
 
-                response = {player: response_all for player in self.group.get_players()}
+                response = {player.id_in_group: response_all for player in self.group.get_players()}
                 response.update({buyer.id_in_group: response_me})
+                print("This is the response from a contract" + str(response))
                 return response
-#todo: dos responses ?
+
     def bids(self):
         return Bid.objects.filter(player=self)
 

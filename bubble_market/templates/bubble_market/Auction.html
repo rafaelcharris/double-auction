@@ -35,7 +35,7 @@
 Price: <input id="bid_box" type="number">
 <button type="button" id="bid_button" class="btn btn-primary">Submit Buy Price</button>
 
-<input id = "buyer" type = "hidden" type = "number">
+<input id = "highest_bidder" type = "hidden" type = "number">
 <input id="buy_asset" type="hidden" type = "number">
 <button type="button" id="buy_bid_button" class="btn btn-success btn-block p-1">Buy Asset at </button>
 </div>
@@ -70,7 +70,7 @@ Price: <input id="bid_box" type="number">
 Price: <input id="ask_box" type="number">
 <button type="button" id="ask_button" class="btn btn-primary">Submit Ask price</button>
 <!---This hidden input should have the amount of the highest bid --->
-    <input id = "seller" type = "hidden" type = "number">
+    <input id = "lowest_asker" type = "hidden" type = "number">
     <input id="sell_asset" type="hidden" type = "number">
 <button type="button" id="sell_ask_button" class="btn btn-success btn-block mr-1">Sell Asset at </button>
     </div>
@@ -118,21 +118,21 @@ Price: <input id="ask_box" type="number">
     let sell_asset = document.getElementById('bid_box');
     let buy_asset = document.getElementById('ask_box');
 
-    let seller = document.getElementById('seller');
-    let buyer = document.getElementById('buyer');
+    let highest_bidder = document.getElementById('highest_bidder');
+    let lowest_asker = document.getElementById('lowest_asker');
 
     function liveRecv(data) {
         if (data.type == "bid"){
             history_bid.innerHTML = '<tr><td>' + data.id_in_group + '</td><td>' + data.value + '</td></tr>';
             document.getElementById("sell_ask_button").innerHTML = 'Sell Asset at: ' + data.value;
             document.getElementById("sell_asset") = data.value;
-
+            document.getElementById("highest_bidder") = data.id_in_group;
         } else if (data.type == "ask"){
+            console.log(data);
             history_ask.innerHTML = '<tr><td>' + data.id_in_group + '</td><td>' + data.value + '</td></tr>';
             document.getElementById("buy_bid_button").innerHTML = 'Buy Asset at: ' + data.value;
             document.getElementById("buy_asset") = data.value;
-            document.getElementById("seller") = data.id_in_group;
-            console.log(seller)
+            document.getElementById("lowest_asker") = data.id_in_group;
         } else if (data.type == "contract"){
             history.innerHTML += '<tr><td>' + data.value + '</td></tr>';
 
@@ -144,7 +144,6 @@ Price: <input id="ask_box" type="number">
                 document.getElementById('sell_asset').value = data.value;
                 history_bid.innerHTML = " ";
             }
-
             document.getElementById("cash").innerHTML = '<tr><th><h5>Your Cash:</h5></th>' + '<th>' + data.money + '</th></tr>';
             document.getElementById("assets").innerHTML = '<tr><th><h5>Your Assets:</h5></th>' + '<th>' + data.assets + '</th></tr>';
         } else if (data.type == "error"){
@@ -157,16 +156,16 @@ Price: <input id="ask_box" type="number">
     };
 
     ask_button.onclick = function () {
-        liveSend({'value': parseInt(ask_box.value), 'type': "ask", 'seller': parseInt(seller.value)});
+        liveSend({'value': parseInt(ask_box.value), 'type': "ask"});
     };
 
     sell_ask_button.onclick = function () {
-        liveSend({'value': parseInt(sell_asset.value), 'type': "contract", 'action': "press_sell"});
+        liveSend({'value': parseInt(sell_asset.value), 'type': "contract", 'action': "press_sell", 'lowest_asker': parseInt(lowest_asker.value)});
         press_buy = false;
     };
 
     buy_bid_button.onclick = function () {
-        liveSend({'value': parseInt(ask_button.value), 'type': "contract", 'action': "press_buy"});
+        liveSend({'value': parseInt(ask_button.value), 'type': "contract", 'action': "press_buy", 'highest_bidder': parseInt(highest_bidder.value)});
         press_buy = true;
     };
 </script>
