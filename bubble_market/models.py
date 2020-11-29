@@ -78,6 +78,7 @@ class Player(BasePlayer):
             my_id = self.id_in_group
             if data["value"] < group.lowest_ask:
                 group.lowest_asker = my_id
+                group.lowest_ask = data["value"]
                 response = {"id_in_group":my_id,
                             "type": "ask",
                             "value":data["value"]}
@@ -137,6 +138,7 @@ class Player(BasePlayer):
                         print("This is the response from a contract" + str(response))
                         return response
                 else:
+                    print("debería mandar error")
                     response = {"type":"error",
                                 "message": "You don't have enough money",
                                 "error_code": 4}
