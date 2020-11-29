@@ -5,11 +5,23 @@ import time
 
 class Instructions(Page):
     def is_displayed(self):
-        return False
+        if self.round_number == 1:
+            return True
+
+    def vars_for_template(self):
+        return dict(
+            time_limit=self.session.config['time_limit']
+        )
+
+    def before_next_page(self):
+        self.session.vars['expiry'] = time.time() + self.session.config['time_limit']
 
 
 class Auction(Page):
     live_method = 'live_auction'
+
+    def get_timeout_seconds(self):
+        return self.session.vars['expiry'] - time.time()
 
     def vars_for_template(self):
         return {"remaining_periods": Constants.num_rounds - self.group.round_number,
@@ -17,6 +29,9 @@ class Auction(Page):
                 "initial_amount": Constants.endowment,
                 "initial_assets": self.player.assets
                 }
+
+    def is_displayed(self):
+        return self.session.vars['expiry'] - time.time() > 0
 
 class ResultsWaitPage(WaitPage):
     pass

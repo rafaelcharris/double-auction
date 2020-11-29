@@ -3,6 +3,7 @@
 
 {% block global_styles  %}
 <h1>Period {{subsession.round_number}}</h1>
+<h2>Your Id: {{player.id_in_group}}</h2>
 <hr>
 <div>
     <table class = "table">
@@ -34,6 +35,7 @@
 Price: <input id="bid_box" type="number">
 <button type="button" id="bid_button" class="btn btn-primary">Submit Buy Price</button>
 
+<input id = "buyer" type = "hidden" type = "number">
 <input id="buy_asset" type="hidden" type = "number">
 <button type="button" id="buy_bid_button" class="btn btn-success btn-block p-1">Buy Asset at </button>
 </div>
@@ -117,6 +119,8 @@ Price: <input id="ask_box" type="number">
     let buy_asset = document.getElementById('ask_box');
 
     let seller = document.getElementById('seller');
+    let buyer = document.getElementById('buyer');
+
     function liveRecv(data) {
         if (data.type == "bid"){
             history_bid.innerHTML = '<tr><td>' + data.id_in_group + '</td><td>' + data.value + '</td></tr>';
@@ -127,7 +131,8 @@ Price: <input id="ask_box" type="number">
             history_ask.innerHTML = '<tr><td>' + data.id_in_group + '</td><td>' + data.value + '</td></tr>';
             document.getElementById("buy_bid_button").innerHTML = 'Buy Asset at: ' + data.value;
             document.getElementById("buy_asset") = data.value;
-            document.getElementById('seller')  = data.id_in_group;
+            document.getElementById("seller") = data.id_in_group;
+            console.log(seller)
         } else if (data.type == "contract"){
             history.innerHTML += '<tr><td>' + data.value + '</td></tr>';
 
@@ -165,4 +170,6 @@ Price: <input id="ask_box" type="number">
         press_buy = true;
     };
 </script>
+
+
 {% endblock %}

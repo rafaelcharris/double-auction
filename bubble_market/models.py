@@ -46,6 +46,7 @@ class Player(BasePlayer):
 
     def live_auction(self, data):
         if data["type"] == "bid":
+            print("This is how data from Bid looks like: " + str(data))
             group = self.group
             my_id = self.id_in_group
 
@@ -65,6 +66,7 @@ class Player(BasePlayer):
                 return {self.id_in_group: response}
 
         elif data["type"] == "ask":
+            print("This is how data from Ask looks like: " + str(data))
             group = self.group
             my_id = self.id_in_group
             if data["value"] < group.lowest_ask:
@@ -75,13 +77,14 @@ class Player(BasePlayer):
                 return {0: response}
 
         elif data["type"] == "contract":
+            print("This is how data from Contract looks like: " + str(data))
             print("This is data: " + str(data))
              #Restablecer el valor de la highest bid a lo más bajo cuando se venda el paquete
             if data["value"] <= self.money:
                 if data["action"] == "press_buy":
-                    self.group.lowest_bidder = self.player.id_in_group
+                    self.group.highest_bidder = self.id_in_group
                 else:
-                    self.group.highest_bid = self.player.id_in_group
+                    self.group.lowest_asker = self.id_in_group
                 #El problema es que lowest asker cambia cuando pasan dos cosas: 1
                 #Definir quién vendió y quién compró
                 buyer = self.group.get_player_by_id(self.group.highest_bidder)
@@ -107,7 +110,6 @@ class Player(BasePlayer):
 
                 response = {player: response_all for player in self.group.get_players()}
                 response.update({buyer.id_in_group: response_me})
-                print("This is what response looks like: " + str(response))
                 return response
 #todo: dos responses ?
     def bids(self):
