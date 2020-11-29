@@ -98,8 +98,8 @@ Price: <input id="ask_box" type="number">
     </div>
 </div>
 </div>
-
-<input  type="hidden" id="contract_prices" name="contract_prices" />
+{{ form.contract_prices.errors }}
+<input type="hidden" id="contract_prices" name="contract_prices"/>
 
 {% endblock %}
 
@@ -149,14 +149,12 @@ Price: <input id="ask_box" type="number">
                 history_ask.innerHTML = " ";
                 document.getElementById("buy_bid_button").innerHTML = 'Buy Asset at: ';
                 // this should append a list to the aNumber variable
-                aNumber.push(document.getElementById("sell_asset").value)
-                document.getElementById('contract_prices').value = JSON.stringify(aNumber);
+                aNumber.push(document.getElementById("sell_asset").value);
                 document.getElementById("sell_asset").value = 0;
             } else {
                 history_bid.innerHTML = " ";
-                aNumber.push(document.getElementById("buy_asset").value)
+                aNumber.push(document.getElementById("buy_asset").value);
                 document.getElementById("buy_asset").value = 0;
-                document.getElementById('contract_prices').value = JSON.stringify(aNumber);
                 document.getElementById("sell_ask_button").innerHTML = 'Sell Asset at: ';
             }
             if (data.deal){
@@ -167,7 +165,7 @@ Price: <input id="ask_box" type="number">
             alert(data.message);
             }
         }
-
+    document.querySelector('[name=contract_prices]').value = JSON.stringify(aNumber);
     bid_button.onclick = function () {
         liveSend({'value': parseInt(bid_box.value), 'type': "bid"});
     };

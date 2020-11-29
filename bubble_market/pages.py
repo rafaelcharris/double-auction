@@ -19,6 +19,7 @@ class Instructions(Page):
 
 class Auction(Page):
     live_method = 'live_auction'
+    form_model = 'group'
     form_fields = ['contract_prices']
 
     def get_timeout_seconds(self):
