@@ -47,15 +47,7 @@ class Group(BaseGroup):
 
     def set_mean_price(self):
         print("the Contract prices are: " + str(self.contract_prices))
-        #for player in self.get_players():
-        #    break
-        #    #print("Here I have players price: " + str(player.participant.vars["prices"]))
-        #    #values.append(player.participant.vars["prices"])
-        #mp = sum(values)/len(values)
-        ##Set the value to the variable
-        #self.mean_price = mp
-        #print("mean price: " + str(mp))
-        #pass
+
     contract_prices = models.LongStringField()
 
 class Player(BasePlayer):
