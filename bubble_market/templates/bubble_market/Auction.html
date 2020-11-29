@@ -140,10 +140,12 @@ Price: <input id="ask_box" type="number">
             //document.getElementById("sell_asset").value = 0;
             if (data.action == "press_buy"){
                 history_ask.innerHTML = " ";
-                document.getElementById("buy_bid_button").innerHTML = 'Buy Asset at: ' + data.value;
+                document.getElementById("buy_bid_button").innerHTML = 'Buy Asset at: ';
+                document.getElementById("sell_asset").value = 0;
             } else {
                 history_bid.innerHTML = " ";
-                document.getElementById("sell_ask_button").innerHTML = 'Sell Asset at: ' + data.value;
+                document.getElementById("buy_asset").value = 0;
+                document.getElementById("sell_ask_button").innerHTML = 'Sell Asset at: ';
             }
             if (data.deal){
                 document.getElementById("cash").innerHTML = '<tr><th><h5>Your Cash:</h5></th>' + '<th>' + data.money + '</th></tr>';

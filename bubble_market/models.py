@@ -109,6 +109,10 @@ class Player(BasePlayer):
                     print("Player " + str(self.id_in_group) + " has enough money.")
                     print("This is the highest bidder: " + str(self.group.highest_bidder))
                     print("This is the lowest bidder: " + str(self.group.lowest_asker))
+                    if data["value"] == 0:
+                        response = {"type": 0,
+                                    "message": "There are no assets to buy"}
+                        return {self.id_in_group: response}
                     if self.group.highest_bidder == self.group.lowest_asker:
                         response = {"type": "error",
                                     "message": "You cannot buy from yourself",
@@ -171,7 +175,10 @@ class Player(BasePlayer):
                                     "message": "You cannot sell to yourself"
                                     }
                         return {self.id_in_group: response}
-
+                    if data["value"] == 0:
+                        response = {"type": 0,
+                                    "message": "There are no assets to sell"}
+                        return {self.id_in_group: response}
                     buyer = self.group.get_player_by_id(self.group.highest_bidder)
                     seller = self.group.get_player_by_id(self.group.lowest_asker)
                     # Cambiar el dinero
