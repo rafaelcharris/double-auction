@@ -212,14 +212,5 @@ class Player(BasePlayer):
                                 "error_code": 4}
                     return {self.id_in_group: response}
 
-    def bids(self):
-        return Bid.objects.filter(player=self)
 
-class Bid(ExtraModel):
-    player = models.Link(Player)
-    group = models.Link(Group)
-
-#TODO: Hacer que se puedan comprar cosas
-#TODO: mostar info de las transacciones
-#TODO: IMPEDIR QUE LA GENTE COMPRE MÁS ALLÁ DE SU DINERO
 #TODO: Agregar botón de eliminar la bid o ask
