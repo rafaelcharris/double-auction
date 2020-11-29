@@ -3,7 +3,7 @@
 
 {% block global_styles  %}
 <h1>Period {{subsession.round_number}}</h1>
-<h2>Your Id: {{player.id_in_group}}</h2>
+<h2>Your are: Player {{player.id_in_group}}</h2>
 <hr>
 <div>
     <table class = "table">
@@ -138,9 +138,11 @@ Price: <input id="ask_box" type="number">
             history.innerHTML += '<tr><td>' + data.value + '</td></tr>';
             if (press_buy){
                 history_ask.innerHTML = " ";
+                document.getElementById("buy_bid_button").innerHTML = 'Buy Asset at: ' + data.value;
                 // creo que también me toca cambiar el valor de nuevo a cero
             } else {
                 history_bid.innerHTML = " ";
+                document.getElementById("sell_ask_button").innerHTML = 'Sell Asset at: ' + data.value;
             }
             if (data.deal){
                 document.getElementById("cash").innerHTML = '<tr><th><h5>Your Cash:</h5></th>' + '<th>' + data.money + '</th></tr>';
