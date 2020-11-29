@@ -118,11 +118,11 @@ class Player(BasePlayer):
                         seller.money -= data["value"]
                         buyer.assets -= 1
                         seller.assets += 1
-                        return {seller.id_in_group, response_seller}
+                        return {seller.id_in_group: response_seller}
                     else:
                         # Restablecer el valor de highest bid
                         self.group.highest_bid = 0
-                        self.group.lowest_ask = 100
+                        self.group.lowest_ask = Constants.endowment
 
                         response_me = {"id_in_group": buyer.id_in_group,
                                        "type": "contract",
