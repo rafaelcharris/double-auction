@@ -42,6 +42,7 @@ class ResultsWaitPage(WaitPage):
 class Results(Page):
     def before_next_page(self):
         self.session.vars['expiry'] = time.time() + self.session.config['time_limit']
+        self.group.set_mean_price()
 
     def is_displayed(self):
         return self.round_number > 1 and self.round_number < Constants.num_rounds + 1
