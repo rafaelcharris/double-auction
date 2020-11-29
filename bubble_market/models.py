@@ -44,13 +44,15 @@ class Group(BaseGroup):
     def set_payoffs(self):
         for player in self.get_players():
             player.payoff = player.assets*self.fundamental_value + player.money
-
+    def set_mean_price(self):
+        []
+    mean_price = models.IntegerField()
 
 class Player(BasePlayer):
 
     assets = models.IntegerField(initial = Constants.assets)
     money = models.CurrencyField(initial = Constants.endowment)
-
+    #prices = []
     def live_auction(self, data):
         if data["type"] == "bid":
             print("Ask data: " + str(data))
@@ -192,7 +194,9 @@ class Player(BasePlayer):
                         # Restablecer el valor de highest bid
                         self.group.highest_bid = 0
                         self.group.lowest_ask = Constants.endowment
-
+                        #store the current price in a way
+                        prices = []
+                        prices.append(data["value"])
                         response_seller = {"id_in_group": seller.id_in_group,
                                        "type": "contract",
                                        "value": data["value"],
