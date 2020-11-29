@@ -28,21 +28,23 @@ class Auction(Page):
                 "average_div_now": self.group.fundamental_value*self.group.round_number,
                 "av_divided": Constants.average_divided,
                 "initial_amount": Constants.endowment,
-                "initial_assets": self.player.assets
+                "initial_assets": self.player.assets,
+                "previous_dividend": int(self.group.in_round(self.round_number - 1 ).fundamental_value) if self.round_number > 2 else "-"
                 }
 
     def is_displayed(self):
-        return self.session.vars['expiry'] - time.time() > 0
+        return self.round_number > 1 and self.round_number < Constants.num_rounds + 1
 
 class ResultsWaitPage(WaitPage):
     after_all_players_arrive = 'set_payoffs'
 
 
 class Results(Page):
+    def before_next_page(self):
+        self.session.vars['expiry'] = time.time() + self.session.config['time_limit']
 
     def is_displayed(self):
-        if self.round_number == Constants.num_rounds:
-            return True
+        return self.round_number > 1 and self.round_number < Constants.num_rounds + 1
 
 
 page_sequence = [Instructions, Auction, ResultsWaitPage, Results]

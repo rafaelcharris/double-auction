@@ -9,7 +9,16 @@
 <h1> This turn's divided was {{group.fundamental_value}}</h1>
 
 <h1>Therefore, your payoff is: {{player.payoff}}</h1>
-    {% next_button %}
+
+  <button class="otree-btn-next btn otree-next-button invisible" id = "quit_results"></button>
 {% endblock %}
 
+{% block global_scripts  %}
+<script>
+        setTimeout(function(){
+           document.getElementById("quit_results").click();}
+    , 4000);
+</script>
 
+
+{% endblock %}
