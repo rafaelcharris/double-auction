@@ -166,6 +166,7 @@ Price: <input id="ask_box" type="number">
             }
         }
     document.querySelector('[name=contract_prices]').value = JSON.stringify(aNumber);
+
     bid_button.onclick = function () {
         liveSend({'value': parseInt(bid_box.value), 'type': "bid"});
     };

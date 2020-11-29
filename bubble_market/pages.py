@@ -26,7 +26,7 @@ class Auction(Page):
         return self.session.vars['expiry'] - time.time()
 
     def vars_for_template(self):
-        return {"remaining_periods": Constants.num_rounds - self.group.round_number,
+        return {"remaining_periods": Constants.num_rounds +1 - self.group.round_number,
                 "average_div_now": self.group.fundamental_value*self.group.round_number,
                 "av_divided": Constants.average_divided,
                 "initial_amount": Constants.endowment,
