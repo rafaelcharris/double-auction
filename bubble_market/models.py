@@ -251,4 +251,5 @@ class Player(BasePlayer):
 
 
 #TODO: Agregar botón de eliminar la bid o ask
-# https://groups.google.com/g/otree/c/NyPsNsEpXu0/m/w1PsVNB2DwAJ SOLUACION A LA STORE DE VALUES
+# https://groups.google.com/g/otree/c/NyPsNsEpXu0/m/w1PsVNB2DwAJ SOLUACION A LA STORE DE VALUES -> Use this when the
+# thing is received
