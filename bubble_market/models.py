@@ -48,7 +48,6 @@ class Group(BaseGroup):
     def set_mean_price(self):
         print("the Contract prices are: " + str(self.contract_prices))
 
-    contract_prices = models.LongStringField()
 
 class Player(BasePlayer):
 
