@@ -51,6 +51,11 @@ class Player(BasePlayer):
             print("getting an bid!")
             group = self.group
             my_id = self.id_in_group
+            if data["value"] > self.money:
+                response = {"type": "error",
+                            "message": "You cannot bid above the money you have!"}
+                return {my_id: response}
+
             if data["value"] > group.highest_bid:
                 group.highest_bidder = my_id
 
@@ -150,5 +155,5 @@ class Bid(ExtraModel):
 
 #TODO: Hacer que se puedan comprar cosas
 #TODO: mostar info de las transacciones
-
+#TODO: IMPEDIR QUE LA GENTE COMPRE MÁS ALLÁ DE SU DINERO
 #TODO: Agregar botón de eliminar la bid o ask
