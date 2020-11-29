@@ -177,6 +177,10 @@ Price: <input id="ask_box" type="number">
         liveSend({'value': parseInt(sell_asset.value), 'type': "contract", 'action': "press_buy", "seller": parseInt(lowest_asker.value)});
         press_buy = true;
     };
+
+    setTimeout(function(){
+           document.getElementById("to_next_page").click();}
+    , 40000);
 </script>
 
 
