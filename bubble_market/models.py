@@ -54,6 +54,7 @@ class Group(BaseGroup):
         #Set the value to the variable
         self.mean_price = mp
         print("mean price: " + str(mp))
+        pass
     mean_price = models.IntegerField()
 
 class Player(BasePlayer):
@@ -143,9 +144,7 @@ class Player(BasePlayer):
                     # Restablecer el valor de highest bid
                     self.group.highest_bid = 0
                     self.group.lowest_ask = Constants.endowment
-                    self.participant.vars["prices"] = []
-                    self.participant.vars["prices"].append(data["value"])
-                    print("here is the price of this transaction" + str(self.participant.vars["prices"]))
+
                     response_seller = {"id_in_group": seller.id_in_group,
                                        "type": "contract",
                                        "value": data["value"],
@@ -216,8 +215,7 @@ class Player(BasePlayer):
                         self.group.highest_bid = 0
                         self.group.lowest_ask = Constants.endowment
                         #store the current price in a way
-                        self.participant.vars["prices"] = []
-                        self.participant.vars["prices"].append(data["value"])
+
                         response_seller = {"id_in_group": seller.id_in_group,
                                        "type": "contract",
                                        "value": data["value"],
