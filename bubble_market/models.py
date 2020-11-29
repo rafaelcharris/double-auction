@@ -43,7 +43,7 @@ class Group(BaseGroup):
 
     def set_payoffs(self):
         for player in self.get_players():
-            player.payoff = player.assets*self.group.fundamental_value + player.money
+            player.payoff = player.assets*self.fundamental_value + player.money
 
 
 class Player(BasePlayer):
@@ -131,16 +131,20 @@ class Player(BasePlayer):
                                        "value": data["value"],
                                        "assets": seller.assets,
                                        "money": seller.money,
-                                       "deal": True}
+                                       "deal": True,
+                                       "action": "press_buy"}
                     response_buyer = {"id_in_group": buyer.id_in_group,
                                       "type": "contract",
                                       "value": data["value"],
                                       "assets": buyer.assets,
                                       "money": buyer.money,
-                                      "deal": True}
+                                      "deal": True,
+                                      "action": "press_buy"}
                     response_all = {
                         "type": "contract",
-                        "value": data["value"]}
+                        "value": data["value"],
+                        "action": "press_buy"
+                        }
 
                     response = {player.id_in_group: response_all for player in self.group.get_players()}
                     response.update({buyer.id_in_group: response_buyer, seller.id_in_group: response_seller})
@@ -194,17 +198,20 @@ class Player(BasePlayer):
                                        "value": data["value"],
                                        "assets": seller.assets,
                                        "money": seller.money,
-                                        "deal": True}
+                                        "deal": True,
+                                           "action": "press_sell"}
                         response_buyer = {"id_in_group": buyer.id_in_group,
                                            "type": "contract",
                                            "value": data["value"],
                                            "assets": buyer.assets,
                                            "money": buyer.money,
-                                          "deal": True}
+                                          "deal": True,
+                                          "action": "press_sell"}
                         response_all = {
                             "type": "contract",
                             "value": data["value"],
-                            "deal": False}
+                            "deal": False,
+                        "action": "press_sell"}
 
                         response = {player.id_in_group: response_all for player in self.group.get_players()}
                         response.update({buyer.id_in_group: response_buyer, seller.id_in_group: response_seller})

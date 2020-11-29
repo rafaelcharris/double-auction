@@ -136,7 +136,7 @@ Price: <input id="ask_box" type="number">
             //document.getElementById("lowest_asker").value = data.id_in_group;
         } else if (data.type == "contract"){
             history.innerHTML += '<tr><td>' + data.value + '</td></tr>';
-            if (press_buy){
+            if (data.action == "press_buy"){
                 history_ask.innerHTML = " ";
                 document.getElementById("buy_bid_button").innerHTML = 'Buy Asset at: ' + data.value;
             } else {
