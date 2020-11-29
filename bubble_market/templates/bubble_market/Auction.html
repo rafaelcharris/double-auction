@@ -71,7 +71,7 @@ Price: <input id="ask_box" type="number">
 <button type="button" id="ask_button" class="btn btn-primary">Submit Ask price</button>
 <!---This hidden input should have the amount of the highest bid --->
     <input id = "lowest_asker" type = "hidden" type = "number">
-    <input id="sell_asset" type="hidden" type = "number">
+    <input id = "sell_asset" type="hidden" type = "number">
 <button type="button" id="sell_ask_button" class="btn btn-success btn-block mr-1">Sell Asset at </button>
     </div>
   </div>
@@ -160,12 +160,12 @@ Price: <input id="ask_box" type="number">
     };
 
     sell_ask_button.onclick = function () {
-        liveSend({'value': parseInt(buy_asset.value), 'type': "contract", 'action': "press_sell"});
+        liveSend({'value': parseInt(sell_asset.value), 'type': "contract", 'action': "press_sell"});
         press_buy = false;
     };
 
     buy_bid_button.onclick = function () {
-        liveSend({'value': parseInt(sell_asset.value), 'type': "contract", 'action': "press_buy", "seller": parseInt(lowest_asker.value)});
+        liveSend({'value': parseInt(buy_asset.value), 'type': "contract", 'action': "press_buy", "seller": parseInt(lowest_asker.value)});
         press_buy = true;
     };
 </script>
