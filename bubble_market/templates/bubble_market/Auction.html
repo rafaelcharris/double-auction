@@ -118,9 +118,9 @@ Price: <input id="ask_box" type="number">
     let sell_asset;
     let buy_asset;
 
-    //let highest_bidder = document.getElementById('highest_bidder');
-    //let lowest_asker = document.getElementById('lowest_asker');
-    let lowest_asker;
+    let highest_bidder = document.getElementById('highest_bidder');
+    let lowest_asker = document.getElementById('lowest_asker');
+
 
     function liveRecv(data) {
         if (data.type == "bid"){
@@ -128,24 +128,20 @@ Price: <input id="ask_box" type="number">
             history_bid.innerHTML = '<tr><td>' + data.id_in_group + '</td><td>' + data.value + '</td></tr>';
             document.getElementById("sell_ask_button").innerHTML = 'Sell Asset at: ' + data.value;
             document.getElementById("sell_asset") = data.value;
-            highest_bidder = data.id_in_group;
+            document.getElementById('highest_bidder') = data.id_in_group;
         } else if (data.type == "ask"){
             console.log(data)
             history_ask.innerHTML = '<tr><td>' + data.id_in_group + '</td><td>' + data.value + '</td></tr>';
             document.getElementById("buy_bid_button").innerHTML = 'Buy Asset at: ' + data.value;
             document.getElementById("buy_asset") = data.value;
-            //document.getElementById('lowest_asker') = data.id_in_group;
-            lowest_asker = data.id_in_group;
-            console.log(lowest_asker)
+            document.getElementById('lowest_asker') = data.id_in_group;
         } else if (data.type == "contract"){
             console.log(data);
             history.innerHTML += '<tr><td>' + data.value + '</td></tr>';
             if (press_buy){
-                //document.getElementById('buy_asset').value = data.value;
                 history_ask.innerHTML = " ";
                 // creo que también me toca cambiar el valor de nuevo a cero
             } else {
-                //document.getElementById('sell_asset').value = data.value;
                 history_bid.innerHTML = " ";
             }
             document.getElementById("cash").innerHTML = '<tr><th><h5>Your Cash:</h5></th>' + '<th>' + data.money + '</th></tr>';
