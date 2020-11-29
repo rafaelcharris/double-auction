@@ -147,13 +147,8 @@ Price: <input id="ask_box" type="number">
             document.getElementById("cash").innerHTML = '<tr><th><h5>Your Cash:</h5></th>' + '<th>' + data.money + '</th></tr>';
             document.getElementById("assets").innerHTML = '<tr><th><h5>Your Assets:</h5></th>' + '<th>' + data.assets + '</th></tr>';
         } else if (data.type == "error"){
-            //alert("error. Your bid is too low");
-            if (data.error_code == 2){
-            alert(data.message);
-            } else if (data.error_code == 1) {
             alert(data.message);
             }
-
         }
     }
 

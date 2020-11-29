@@ -87,49 +87,59 @@ class Player(BasePlayer):
                 self.group.highest_bidder = self.id_in_group
                 if data["value"] <= self.money:
                     print("Player " + str(self.id_in_group) + " has enough money.")
+                    print("This is the highest bidder: " + str(self.group.highest_bidder))
+                    print("This is the lowest bidder: " + str(self.group.lowest_asker))
+                    if self.group.highest_bidder == self.group.lowest_asker:
+                        response = {"type": "error",
+                                    "message": "You cannot buy from yourself",
+                                    "error_code": 3
+                                    }
+                        return {self.id_in_group: response}
+
+                    buyer = self.group.get_player_by_id(self.group.highest_bidder)
+                    seller = self.group.get_player_by_id(self.group.lowest_asker)
+                    # Cambiar el dinero
+                    buyer.money -= data["value"]
+                    seller.money += data["value"]
+                    buyer.assets += 1
+                    seller.assets -= 1
+                    # Cambiar los assets
+                    if seller.assets < 0:
+                        response_seller = {"type": "error",
+                                           "message": "You cannot sell more assets",
+                                           "error_code": 2}
+                        buyer.money += data["value"]
+                        seller.money -= data["value"]
+                        buyer.assets -= 1
+                        seller.assets += 1
+                        return {seller.id_in_group, response_seller}
+                    else:
+                        # Restablecer el valor de highest bid
+                        self.group.highest_bid = 0
+                        self.group.lowest_ask = 100
+
+                        response_me = {"id_in_group": buyer.id_in_group,
+                                       "type": "contract",
+                                       "value": data["value"],
+                                       "assets": buyer.assets,
+                                       "money": buyer.money}
+                        response_all = {
+                            "type": "contract",
+                            "value": data["value"]}
+
+                        response = {player.id_in_group: response_all for player in self.group.get_players()}
+                        response.update({buyer.id_in_group: response_me})
+                        print("This is the response from a contract" + str(response))
+                        return response
+                else:
+                    response = {"type":"error",
+                                "message": "You don't have enough money",
+                                "error_code": 4}
+                    return {self.id_in_group: response}
 
             else:
                 self.group.lowest_asker = self.id_in_group
                 print("The player pressed buy")
-                #El problema es que lowest asker cambia cuando pasan dos cosas: 1
-                #Definir quién vendió y quién compró
-                print("This is the highest bidder: " + str(self.group.highest_bidder))
-                print("This is the lowest bidder: " + str(self.group.lowest_asker))
-                buyer = self.group.get_player_by_id(self.group.highest_bidder)
-                seller = self.group.get_player_by_id(self.group.lowest_asker)
-                #Cambiar el dinero
-                buyer.money -= data["value"]
-                seller.money += data["value"]
-                buyer.assets += 1
-                seller.assets -= 1
-                #Cambiar los assets
-                if seller.assets < 0:
-                    response_seller =  {"type":"error",
-                            "message":"You cannot sell more assets",
-                                        "error_code": 2}
-                    buyer.money += data["value"]
-                    seller.money -= data["value"]
-                    buyer.assets -= 1
-                    seller.assets += 1
-                    return {seller.id_in_group, response_seller}
-                else:
-                    #Restablecer el valor de highest bid
-                    self.group.highest_bid = 0
-                    self.group.lowest_ask = 100
-
-                    response_me = {"id_in_group": buyer.id_in_group,
-                                "type": "contract",
-                                "value": data["value"],
-                                 "assets": buyer.assets,
-                                "money": buyer.money}
-                    response_all = {
-                                   "type": "contract",
-                                   "value": data["value"]}
-
-                    response = {player.id_in_group: response_all for player in self.group.get_players()}
-                    response.update({buyer.id_in_group: response_me})
-                    print("This is the response from a contract" + str(response))
-                    return response
 
     def bids(self):
         return Bid.objects.filter(player=self)
