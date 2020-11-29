@@ -48,10 +48,9 @@ class Player(BasePlayer):
 
     def live_auction(self, data):
         if data["type"] == "bid":
-
+            print("getting an bid!")
             group = self.group
             my_id = self.id_in_group
-
             if data["value"] > group.highest_bid:
                 group.highest_bidder = my_id
 
@@ -69,6 +68,7 @@ class Player(BasePlayer):
                 return {self.id_in_group: response}
 
         elif data["type"] == "ask":
+            print("getting an ask!")
             group = self.group
             my_id = self.id_in_group
             if data["value"] < group.lowest_ask:
