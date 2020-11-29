@@ -25,6 +25,8 @@ class Constants(BaseConstants):
     fundamental_value = [0, 8, 28, 60]
     endowment = 100
     average_divided = sum(fundamental_value)/len(fundamental_value)
+    assets = 5
+
 class Subsession(BaseSubsession):
 
     def creating_session(self):
@@ -41,18 +43,18 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
 
-    assets = models.IntegerField(initial = 0)
+    assets = models.IntegerField(initial = Constants.assets)
     money = models.CurrencyField(initial = Constants.endowment)
 
     def live_auction(self, data):
         if data["type"] == "bid":
-            print("This is how data from Bid looks like: " + str(data))
+
             group = self.group
             my_id = self.id_in_group
 
             if data["value"] > group.highest_bid:
                 group.highest_bidder = my_id
-                print("Highest Bidder is player: " + str(my_id))
+
                 group.highest_bid = data["value"]
                 response = {"id_in_group": my_id,
                             "type": "bid",
@@ -79,8 +81,6 @@ class Player(BasePlayer):
                 return {0: response}
 
         elif data["type"] == "contract":
-            print("This is how data from Contract looks like: " + str(data))
-            print("This is data: " + str(data))
              #Restablecer el valor de la highest bid a lo más bajo cuando se venda el paquete
             if data["value"] <= self.money:
                 if data["action"] == "press_buy":
@@ -96,26 +96,34 @@ class Player(BasePlayer):
                 #Cambiar el dinero
                 buyer.money -= data["value"]
                 seller.money += data["value"]
-                #Cambiar los assets
                 buyer.assets += 1
                 seller.assets -= 1
-                #Restablecer el valor de highest bid
-                self.group.highest_bid = 0
-                self.group.lowest_ask = 100
+                #Cambiar los assets
+                if seller.assets < 0:
+                    response_seller =  {"type":"error",
+                            "message":"You cannot sell more assets",
+                                        "error_code": 2}
 
-                response_me = {"id_in_group": buyer.id_in_group,
-                            "type": "contract",
-                            "value": data["value"],
-                             "assets": buyer.assets,
-                            "money": buyer.money}
-                response_all = {
-                               "type": "contract",
-                               "value": data["value"]}
+                    return {seller.id_in_group, response_seller}
+                else:
 
-                response = {player.id_in_group: response_all for player in self.group.get_players()}
-                response.update({buyer.id_in_group: response_me})
-                print("This is the response from a contract" + str(response))
-                return response
+                    #Restablecer el valor de highest bid
+                    self.group.highest_bid = 0
+                    self.group.lowest_ask = 100
+
+                    response_me = {"id_in_group": buyer.id_in_group,
+                                "type": "contract",
+                                "value": data["value"],
+                                 "assets": buyer.assets,
+                                "money": buyer.money}
+                    response_all = {
+                                   "type": "contract",
+                                   "value": data["value"]}
+
+                    response = {player.id_in_group: response_all for player in self.group.get_players()}
+                    response.update({buyer.id_in_group: response_me})
+                    print("This is the response from a contract" + str(response))
+                    return response
 
     def bids(self):
         return Bid.objects.filter(player=self)
