@@ -45,7 +45,7 @@ class Group(BaseGroup):
         for player in self.get_players():
             player.payoff = player.assets*self.fundamental_value + player.money
     def set_mean_price(self):
-        []
+        pass
     mean_price = models.IntegerField()
 
 class Player(BasePlayer):
@@ -97,6 +97,10 @@ class Player(BasePlayer):
                             "value":data["value"]}
                 print("Response from ask: " + str(response))
                 return {0: response}
+            else:
+                response = {"type": "error",
+                            "message": "You cannot ask above the lowest standing ask"}
+                return {my_id: response}
 
         elif data["type"] == "contract":
              #Restablecer el valor de la highest bid a lo más bajo cuando se venda el paquete
@@ -110,7 +114,7 @@ class Player(BasePlayer):
                     print("This is the highest bidder: " + str(self.group.highest_bidder))
                     print("This is the lowest bidder: " + str(self.group.lowest_asker))
                     if data["value"] == 0:
-                        response = {"type": 0,
+                        response = {"type": "error",
                                     "message": "There are no assets to buy"}
                         return {self.id_in_group: response}
                     if self.group.highest_bidder == self.group.lowest_asker:
@@ -176,8 +180,8 @@ class Player(BasePlayer):
                                     }
                         return {self.id_in_group: response}
                     if data["value"] == 0:
-                        response = {"type": 0,
-                                    "message": "There are no assets to sell"}
+                        response = {"type": "error",
+                                    "message": "There are no bids."}
                         return {self.id_in_group: response}
                     buyer = self.group.get_player_by_id(self.group.highest_bidder)
                     seller = self.group.get_player_by_id(self.group.lowest_asker)

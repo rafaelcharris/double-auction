@@ -40,14 +40,13 @@ Price: <input id="bid_box" type="number">
 <button type="button" id="buy_bid_button" class="btn btn-success btn-block p-1">Buy Asset at </button>
 </div>
 
-<div class="col-lg">
+<div class="col-lg overflow-auto">
 <table id="history" class="table">
     <thead>
     <tr>
         <td><h5>Recent Transactions Prices</h5></td>
     </tr>
     </thead>
-
 </table>
 </div>
 
@@ -99,6 +98,11 @@ Price: <input id="ask_box" type="number">
 </div>
 </div>
 
+
+{% endblock %}
+
+{% block content  %}
+  <button class="otree-btn-next btn otree-next-button invisible" id = "to_next_page"></button>
 {% endblock %}
 
 {% block global_scripts  %}
