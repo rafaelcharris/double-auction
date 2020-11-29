@@ -48,6 +48,7 @@ class Player(BasePlayer):
 
     def live_auction(self, data):
         if data["type"] == "bid":
+            print("Ask data: " + str(data))
             print("getting an bid!")
             group = self.group
             my_id = self.id_in_group
@@ -73,7 +74,7 @@ class Player(BasePlayer):
                 return {self.id_in_group: response}
 
         elif data["type"] == "ask":
-            print("getting an ask!")
+            print("Ask data: "+str(data))
             group = self.group
             my_id = self.id_in_group
             if data["value"] < group.lowest_ask:
