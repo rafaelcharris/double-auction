@@ -21,7 +21,7 @@ Double Auction with several rounds
 class Constants(BaseConstants):
     name_in_url = 'bubble_market'
     players_per_group = None
-    num_rounds = 10
+    num_rounds = 11
     fundamental_value = [0, 8, 28, 60]
     endowment = 500
     average_divided = sum(fundamental_value)/len(fundamental_value)
@@ -32,8 +32,9 @@ class Subsession(BaseSubsession):
     def creating_session(self):
         for group in self.get_groups():
             group.fundamental_value = random.choice(Constants.fundamental_value)
-        if self.round_number == 1:
+        if self.round_number == 2:
             for players in self.get_players():
+
                 players.assets = Constants.assets
                 players.money = Constants.endowment
 
@@ -45,8 +46,9 @@ class Group(BaseGroup):
     lowest_asker = models.IntegerField()
 
     def set_payoffs(self):
-        for player in self.get_players():
-            player.payoff = player.assets*self.fundamental_value + player.money
+        if self.round_number > 1:
+            for player in self.get_players():
+                player.payoff = player.assets*self.fundamental_value + player.money
 
 
 class Player(BasePlayer):
@@ -244,10 +246,11 @@ class Player(BasePlayer):
 
     def cumulative_variable(self):
         if self.round_number > 2:
-            self.assets = sum(filter(None, [p.assets for p in self.in_previous_rounds()]))
+            #self.assets = sum(filter(None, [p.assets for p in self.in_previous_rounds()]))
+
             self.assets = self.in_round(self.round_number - 1).assets
-            self.money = self.in_round(self.round_number -1 ).money
-            print("Print assets: " + str(self.assets) + "-------|")
+            self.money = self.in_round(self.round_number - 1).money
+            print("Print money: " + str(self.money) + "-------|")
 
 class ContractValue(ExtraModel):
     value = models.IntegerField()
