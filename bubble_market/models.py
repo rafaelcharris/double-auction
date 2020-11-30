@@ -33,8 +33,6 @@ class Subsession(BaseSubsession):
         for group in self.get_groups():
             group.fundamental_value = random.choice(Constants.fundamental_value)
 
-        for p in self.get_players():
-            p.participant.vars["accumulated_assets"] = 0
 class Group(BaseGroup):
     fundamental_value = models.CurrencyField()
     highest_bidder = models.IntegerField()
@@ -45,8 +43,6 @@ class Group(BaseGroup):
     def set_payoffs(self):
         for player in self.get_players():
             player.payoff = player.assets*self.fundamental_value + player.money
-
-
 
 
 class Player(BasePlayer):
@@ -138,19 +134,18 @@ class Player(BasePlayer):
                     self.group.lowest_ask = Constants.endowment
 
                     ContractValue.objects.create(player = buyer, value=data["value"], round=self.round_number - 1)
-                    seller.participant.vars["accumulated_assets"]  += seller.assets
-                    buyer.participant.vars["accumulated_assets"] += buyer.assets
+
                     response_seller = {"id_in_group": seller.id_in_group,
                                        "type": "contract",
                                        "value": data["value"],
-                                       "assets": seller.participant.vars["accumulated_assets"],
+                                       "assets": seller.assets,
                                        "money": seller.money,
                                        "deal": True,
                                        "action": "press_buy"}
                     response_buyer = {"id_in_group": buyer.id_in_group,
                                       "type": "contract",
                                       "value": data["value"],
-                                      "assets": buyer.participant.vars["accumulated_assets"],
+                                      "assets": buyer.assets,
                                       "money": buyer.money,
                                       "deal": True,
                                       "action": "press_buy"}
@@ -243,6 +238,9 @@ class Player(BasePlayer):
                                 "error_code": 4}
                     return {self.id_in_group: response}
 
+    def cumulative_assets(self):
+        if self.round_number > 2:
+            self.assets = sum(filter(None, [p.assets for p in self.in_previous_rounds()]))
 class ContractValue(ExtraModel):
     value = models.IntegerField()
     player = models.Link(Player)
