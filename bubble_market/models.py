@@ -139,7 +139,7 @@ class Player(BasePlayer):
                     self.group.highest_bid = 0
                     self.group.lowest_ask = Constants.endowment
 
-                    ContractValue.objects.create(id=buyer.id_in_group, value=data["value"], round=self.round_number - 1)
+                    ContractValue.objects.create(player = buyer, value=data["value"], round=self.round_number - 1)
                     seller.participant.vars["accumulated_assets"]  += seller.assets
                     buyer.participant.vars["accumulated_assets"] += buyer.assets
                     response_seller = {"id_in_group": seller.id_in_group,
@@ -213,7 +213,7 @@ class Player(BasePlayer):
                         self.group.lowest_ask = Constants.endowment
                         #store the current price in a way
 
-                        ContractValue.objects.create(id = seller.id_in_group, value=data["value"], round=self.round_number - 1)
+                        ContractValue.objects.create(player = seller, value=data["value"], round=self.round_number - 1)
                         response_seller = {"id_in_group": seller.id_in_group,
                                        "type": "contract",
                                        "value": data["value"],
@@ -247,7 +247,7 @@ class Player(BasePlayer):
 
 class ContractValue(ExtraModel):
     value = models.IntegerField()
-    group = models.Link(Player)
+    player = models.Link(Player)
     round = models.IntegerField()
 #TODO: Agregar botón de eliminar la bid o ask
 # https://groups.google.com/g/otree/c/NyPsNsEpXu0/m/w1PsVNB2DwAJ SOLUACION A LA STORE DE VALUES -> Use this when the
