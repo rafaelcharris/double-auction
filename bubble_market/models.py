@@ -259,5 +259,4 @@ def custom_export(groups):
     yield ["player_id", "contract_price", "round"]
     for contract in ContractValue.objects.values():
         print(str(contract['id']))
-        print(str(contract[0]))
         yield[contract['id'], contract['value'], contract['round']]
