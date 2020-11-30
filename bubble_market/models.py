@@ -32,6 +32,10 @@ class Subsession(BaseSubsession):
     def creating_session(self):
         for group in self.get_groups():
             group.fundamental_value = random.choice(Constants.fundamental_value)
+        if self.round_number == 1:
+            for players in self.get_players():
+                players.assets = Constants.assets
+                players.money = Constants.endowment
 
 class Group(BaseGroup):
     fundamental_value = models.CurrencyField()
@@ -47,8 +51,8 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
 
-    assets = models.IntegerField(initial = Constants.assets)
-    money = models.CurrencyField(initial = Constants.endowment)
+    assets = models.IntegerField()
+    money = models.CurrencyField()
 
     def live_auction(self, data):
         if data["type"] == "bid":
@@ -238,9 +242,13 @@ class Player(BasePlayer):
                                 "error_code": 4}
                     return {self.id_in_group: response}
 
-    def cumulative_assets(self):
+    def cumulative_variable(self):
         if self.round_number > 2:
             self.assets = sum(filter(None, [p.assets for p in self.in_previous_rounds()]))
+            self.assets = self.in_round(self.round_number - 1).assets
+            self.money = self.in_round(self.round_number -1 ).money
+            print("Print assets: " + str(self.assets) + "-------|")
+
 class ContractValue(ExtraModel):
     value = models.IntegerField()
     player = models.Link(Player)
