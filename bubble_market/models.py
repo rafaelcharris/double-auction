@@ -14,7 +14,7 @@ import random
 author = 'Your name here'
 
 doc = """
-Your app description
+Double Auction with several rounds
 """
 
 
