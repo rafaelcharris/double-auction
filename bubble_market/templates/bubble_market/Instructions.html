@@ -6,6 +6,12 @@
 {% endblock %}
 
 {% block content  %}
-Titulo
+<h3>In this experiment you can buy and sell assets.
+    Initially you have {{Constants.assets}} assets and {{Constants.endowment}} points to trade with.</h3>
+<h3>
+    The value of each asset changes every round. The real value is draw randomly from this list [0, 8, 28, 60].
+    Therefore, the average value is 24 points.<br>
+    Your objective is to get as many points as possible.
+</h3>
     {% next_button %}
 {% endblock %}
