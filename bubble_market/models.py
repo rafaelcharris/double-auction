@@ -141,8 +141,8 @@ class Player(BasePlayer):
 
                     group = self.group
                     ContractValue.objects.create(value=data["value"], group=group, round = group.round_number)
-                    seller.participant.vars["accumulated_assets"]  += seller.asset
-                    buyer.participant.vars["accumulated_assets"] += buyer.asset
+                    seller.participant.vars["accumulated_assets"]  += seller.assets
+                    buyer.participant.vars["accumulated_assets"] += buyer.assets
                     response_seller = {"id_in_group": seller.id_in_group,
                                        "type": "contract",
                                        "value": data["value"],
@@ -256,6 +256,8 @@ class ContractValue(ExtraModel):
 # thing is received
 
 def custom_export(groups):
+    yield ["player_id", "contract_price", "round"]
     for contract in ContractValue.objects.values():
-        print(str(ContractValue.objects.values()) + " type " + str(type(ContractValue.objects.values())))
-        yield[contract]
+        print(str(contract['id']))
+        print(str(contract[0]))
+        yield[contract['id'], contract['value'], contract['round']]
