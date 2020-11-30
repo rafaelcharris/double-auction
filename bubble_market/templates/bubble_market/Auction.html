@@ -1,6 +1,8 @@
 {% extends "otree/Page.html" %}
 {% load otree static %}
-
+{% block content  %}
+  <button class="otree-btn-next btn otree-next-button invisible" id = "to_next_page"></button>
+{% endblock %}
 {% block global_styles  %}
 <h1>Period {{subsession.round_number}}</h1>
 <h2>Your are: Player {{player.id_in_group}}</h2>
@@ -101,9 +103,7 @@ Price: <input id="ask_box" type="number">
 
 {% endblock %}
 
-{% block content  %}
-  <button class="otree-btn-next btn otree-next-button invisible" id = "to_next_page"></button>
-{% endblock %}
+
 
 {% block global_scripts  %}
 <script>
@@ -180,7 +180,7 @@ Price: <input id="ask_box" type="number">
 
     setTimeout(function(){
            document.getElementById("to_next_page").click();}
-    , 40000);
+    , 90000);
 </script>
 
 
