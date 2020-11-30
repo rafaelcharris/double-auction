@@ -23,7 +23,7 @@ class Constants(BaseConstants):
     players_per_group = None
     num_rounds = 10
     fundamental_value = [0, 8, 28, 60]
-    endowment = 100
+    endowment = 500
     average_divided = sum(fundamental_value)/len(fundamental_value)
     assets = 3
 
