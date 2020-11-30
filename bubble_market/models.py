@@ -54,7 +54,7 @@ class Group(BaseGroup):
 class Player(BasePlayer):
 
     assets = models.IntegerField()
-    money = models.CurrencyField()
+    money = models.IntegerField()
 
     def live_auction(self, data):
         if data["type"] == "bid":
@@ -257,8 +257,8 @@ class ContractValue(ExtraModel):
     player = models.Link(Player)
     round = models.IntegerField()
 #TODO: Agregar botón de eliminar la bid o ask
-# https://groups.google.com/g/otree/c/NyPsNsEpXu0/m/w1PsVNB2DwAJ SOLUACION A LA STORE DE VALUES -> Use this when the
-# thing is received
+
+#Todo: change the place of the timer
 
 def custom_export(players):
     yield ["player_id", "contract_price", "round"]
