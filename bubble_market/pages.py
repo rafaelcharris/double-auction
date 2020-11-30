@@ -10,7 +10,8 @@ class Instructions(Page):
 
     def vars_for_template(self):
         return dict(
-            time_limit=self.session.config['time_limit']
+            time_limit=self.session.config['time_limit'],
+            periods = Constants.num_rounds - 1
         )
 
     def before_next_page(self):
