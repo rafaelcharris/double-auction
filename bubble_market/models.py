@@ -46,8 +46,6 @@ class Group(BaseGroup):
         for player in self.get_players():
             player.payoff = player.assets*self.fundamental_value + player.money
 
-    def set_mean_price(self):
-        pass
 
 
 

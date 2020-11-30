@@ -44,7 +44,6 @@ class ResultsWaitPage(WaitPage):
 class Results(Page):
     def before_next_page(self):
         self.session.vars['expiry'] = time.time() + self.session.config['time_limit']
-        self.group.set_mean_price()
         self.player.participant.vars["acumulated_assets"] = self.player.assets
 
     def is_displayed(self):
