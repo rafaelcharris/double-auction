@@ -1,4 +1,4 @@
-otree# oTree-may-overwrite-this-file
+# oTree-may-overwrite-this-file
 # IF YOU MODIFY THIS FILE, remove this comment.
 # otherwise, oTree will automatically overwrite it.
 otree>=3.3.11
