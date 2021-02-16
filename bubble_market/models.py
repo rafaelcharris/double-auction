@@ -249,7 +249,7 @@ class Player(BasePlayer):
             #self.assets = sum(filter(None, [p.assets for p in self.in_previous_rounds()]))
 
             self.assets = self.in_round(self.round_number - 1).assets
-            self.money = self.in_round(self.round_number - 1).money
+            self.money = self.in_round(self.round_number - 1).payoff
             print("Print money: " + str(self.money) + "-------|")
 
 
