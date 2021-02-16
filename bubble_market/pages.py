@@ -28,12 +28,12 @@ class Auction(Page):
     def vars_for_template(self):
         self.player.cumulative_variable()
         return {"remaining_periods": Constants.num_rounds - self.group.round_number,
-                "av_dividend_round": sum(Constants.fundamental_value)/len(Constants.fundamental_value),
-                "average_div_now": sum(Constants.fundamental_value)/len(Constants.fundamental_value)*(11 - self.group.round_number),
+                "average_div_now": sum(Constants.fundamental_value)/len(Constants.fundamental_value)*(12 - self.group.round_number),
                 "av_divided": Constants.average_divided,
                 "initial_amount": self.player.money,
                 "initial_assets": self.player.assets,
-                "previous_dividend": int(self.group.in_round(self.round_number - 1 ).fundamental_value) if self.round_number > 2 else "-"
+                "previous_dividend": int(self.group.in_round(self.round_number - 1 ).fundamental_value) if self.round_number > 2 else "-",
+                "current_period": self.group.round_number - 1
                 }
 
     def is_displayed(self):

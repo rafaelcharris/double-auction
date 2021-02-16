@@ -4,14 +4,14 @@
   <button class="otree-btn-next btn otree-next-button invisible" id = "to_next_page"></button>
 {% endblock %}
 {% block global_styles  %}
-<h1>Period {{subsession.round_number}}</h1>
+<h1>Period {{current_period}} of 10</h1>
 <h2>Your are: Player {{player.id_in_group}}</h2>
 <hr>
 <div>
     <table class = "table">
         <tr>
             <th>Average Dividend this period: {{av_dividend_round}}</th>
-            <th>Average Total Dividend: {{average_div_now}} </th>
+            <th>Average Total Dividend: {{av_divided}} </th>
             <th>Previous Period Dividend: {{previous_dividend}} </th>
             <th>Periods remaining: {{remaining_periods}}</th>
         </tr>
