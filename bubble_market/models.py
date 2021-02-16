@@ -252,6 +252,7 @@ class Player(BasePlayer):
             self.money = self.in_round(self.round_number - 1).money
             print("Print money: " + str(self.money) + "-------|")
 
+
 class ContractValue(ExtraModel):
     value = models.IntegerField()
     player = models.Link(Player)
