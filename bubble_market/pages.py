@@ -51,5 +51,8 @@ class Results(Page):
     def is_displayed(self):
         return self.round_number > 1 and self.round_number < Constants.num_rounds + 1
 
+class Final(Page):
+    def is_displayed(self):
+        return Constants.num_rounds + 1
 
-page_sequence = [Instructions, Auction, ResultsWaitPage, Results]
+page_sequence = [Instructions, Auction, ResultsWaitPage, Results, Final]
